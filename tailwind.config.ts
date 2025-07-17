@@ -13,19 +13,20 @@ const config: Config = {
   },
   theme: {
     extend: {
+      // Performance: Use CSS custom properties for dynamic theming
       colors: {
         // Theme-aware colors using CSS variables
-        "theme-primary": "var(--theme-primary)",
-        "theme-secondary": "var(--theme-secondary)",
-        "theme-background": "var(--theme-background)",
-        "theme-card": "var(--theme-card)",
-        "theme-border": "var(--theme-border)",
-        "theme-text": "var(--theme-text)",
-        "theme-muted": "var(--theme-muted)",
-        "theme-accent": "var(--theme-accent)",
-        "theme-success": "var(--theme-success)",
-        "theme-warning": "var(--theme-warning)",
-        "theme-error": "var(--theme-error)",
+        "theme-primary": "rgb(var(--theme-primary) / <alpha-value>)",
+        "theme-secondary": "rgb(var(--theme-secondary) / <alpha-value>)",
+        "theme-background": "rgb(var(--theme-background) / <alpha-value>)",
+        "theme-card": "rgb(var(--theme-card) / <alpha-value>)",
+        "theme-border": "rgb(var(--theme-border) / <alpha-value>)",
+        "theme-text": "rgb(var(--theme-text) / <alpha-value>)",
+        "theme-muted": "rgb(var(--theme-muted) / <alpha-value>)",
+        "theme-accent": "rgb(var(--theme-accent) / <alpha-value>)",
+        "theme-success": "rgb(var(--theme-success) / <alpha-value>)",
+        "theme-warning": "rgb(var(--theme-warning) / <alpha-value>)",
+        "theme-error": "rgb(var(--theme-error) / <alpha-value>)",
 
         // shadcn/ui colors
         background: "hsl(var(--background))",

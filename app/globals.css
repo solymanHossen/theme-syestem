@@ -4,18 +4,18 @@
 
 @layer base {
   :root {
-    /* Light mode theme variables */
-    --theme-primary: #1a202c;
-    --theme-secondary: #4a5568;
-    --theme-background: #ffffff;
-    --theme-card: #f7fafc;
-    --theme-border: #e2e8f0;
-    --theme-text: #2d3748;
-    --theme-muted: #718096;
-    --theme-accent: #3182ce;
-    --theme-success: #38a169;
-    --theme-warning: #d69e2e;
-    --theme-error: #e53e3e;
+    /* Light mode theme variables - using RGB values for better performance */
+    --theme-primary: 26 32 44;
+    --theme-secondary: 74 85 104;
+    --theme-background: 255 255 255;
+    --theme-card: 247 250 252;
+    --theme-border: 226 232 240;
+    --theme-text: 45 55 72;
+    --theme-muted: 113 128 150;
+    --theme-accent: 49 130 206;
+    --theme-success: 56 161 105;
+    --theme-warning: 214 158 46;
+    --theme-error: 229 62 62;
 
     /* shadcn/ui variables */
     --background: 0 0% 100%;
