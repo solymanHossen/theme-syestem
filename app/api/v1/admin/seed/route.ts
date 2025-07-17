@@ -18,8 +18,21 @@ export async function POST() {
 
     let insertedCount = 0
     if (predefinedThemes.length > 0) {
-      const result = await CustomTheme.insertMany(predefinedThemes)
-      insertedCount = result.length
+      // Use insertMany with ordered: false to handle any duplicate IDs gracefully
+      try {
+        const result = await CustomTheme.insertMany(predefinedThemes, { ordered: false })
+        insertedCount = result.length
+      } catch (error: any) {
+        // Handle duplicate key errors gracefully
+        if (error.code === 11000) {
+          console.warn("Some themes already exist, skipping duplicates")
+          // Count how many were actually inserted
+          const existingThemes = await CustomTheme.find({ isCustom: { $ne: true } })
+          insertedCount = existingThemes.length
+        } else {
+          throw error
+        }
+      }
     }
 
     // Create default active theme if it doesn't exist

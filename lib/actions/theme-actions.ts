@@ -220,3 +220,35 @@ export async function seedDatabaseAction() {
     }
   }
 }
+
+// Server action for cleaning up duplicate themes
+export async function cleanupThemesAction() {
+  try {
+    await connectToDatabase()
+    
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/v1/themes/cleanup`, {
+      method: 'POST',
+    })
+    
+    if (!response.ok) {
+      throw new Error('Theme cleanup failed')
+    }
+    
+    const result = await response.json()
+    
+    revalidatePath('/admin/themes')
+    revalidatePath('/')
+    
+    return { 
+      success: true, 
+      message: `Cleanup completed. Removed ${result.totalDuplicatesRemoved} duplicate themes.`,
+      details: result
+    }
+  } catch (error) {
+    console.error('Theme cleanup error:', error)
+    return { 
+      success: false, 
+      message: error instanceof Error ? error.message : 'Failed to cleanup themes' 
+    }
+  }
+}

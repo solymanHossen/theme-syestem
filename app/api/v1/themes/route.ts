@@ -7,25 +7,46 @@ export async function GET() {
   try {
     await connectToDatabase()
     
-    // Get custom themes from database
-    const customThemes = await CustomTheme.find({ isCustom: true })
+    // Get all themes from database (both predefined and custom)
+    const dbThemes = await CustomTheme.find({})
       .sort({ createdAt: -1 })
       .lean()
 
-    // Combine predefined themes with custom themes
-    const allThemes = [
-      ...themes, // Predefined themes from themeData.ts
-      ...customThemes // Custom themes from database
-    ]
+    // If no themes in database, use predefined themes from themeData.ts
+    if (dbThemes.length === 0) {
+      return NextResponse.json({
+        themes: themes,
+        count: themes.length,
+        predefinedCount: themes.length,
+        customCount: 0,
+      })
+    }
+
+    // Group themes by source
+    const predefinedThemes = dbThemes.filter(theme => !theme.isCustom)
+    const customThemes = dbThemes.filter(theme => theme.isCustom)
+
+    // If no predefined themes in database, fallback to themeData.ts
+    // This prevents duplicates if seeding hasn't run
+    const allThemes = predefinedThemes.length > 0 
+      ? [...predefinedThemes, ...customThemes]
+      : [...themes, ...customThemes]
 
     return NextResponse.json({
       themes: allThemes,
       count: allThemes.length,
-      predefinedCount: themes.length,
+      predefinedCount: predefinedThemes.length > 0 ? predefinedThemes.length : themes.length,
       customCount: customThemes.length,
     })
   } catch (error) {
     console.error("Error fetching all themes:", error)
-    return NextResponse.json({ error: "Failed to fetch themes" }, { status: 500 })
+    
+    // Fallback to predefined themes on error
+    return NextResponse.json({
+      themes: themes,
+      count: themes.length,
+      predefinedCount: themes.length,
+      customCount: 0,
+    })
   }
 }

@@ -135,7 +135,27 @@ export const useThemeStore = create<ThemeStore>()(
           const response = await fetch("/api/v1/themes")
           if (response.ok) {
             const data = await response.json()
-            set({ themes: data.themes || predefinedThemes })
+            const themes = data.themes || predefinedThemes
+            
+            // Deduplicate themes by ID to prevent React key errors
+            const uniqueThemes = themes.reduce((acc: CustomTheme[], theme: CustomTheme) => {
+              const existingTheme = acc.find(t => t.id === theme.id)
+              if (!existingTheme) {
+                acc.push(theme)
+              } else {
+                // Keep the most recent version (custom themes override predefined)
+                const themeUpdatedAt = (theme as any).updatedAt
+                const existingUpdatedAt = (existingTheme as any).updatedAt
+                
+                if (theme.isCustom || (themeUpdatedAt && existingUpdatedAt && themeUpdatedAt > existingUpdatedAt)) {
+                  const index = acc.findIndex(t => t.id === theme.id)
+                  acc[index] = theme
+                }
+              }
+              return acc
+            }, [])
+            
+            set({ themes: uniqueThemes })
           } else {
             throw new Error("Failed to fetch themes")
           }
@@ -182,7 +202,18 @@ export const useThemeStore = create<ThemeStore>()(
         const timestamp = Date.now()
         const random = Math.random().toString(36).substring(2, 8)
         const cleanName = baseName.toLowerCase().replace(/[^a-z0-9]/g, '-')
-        return `custom-${cleanName}-${timestamp}-${random}`
+        
+        let themeId = `custom-${cleanName}-${timestamp}-${random}`
+        
+        // Ensure uniqueness by checking existing themes
+        const existingThemes = get().themes
+        let counter = 1
+        while (existingThemes.find(t => t.id === themeId)) {
+          themeId = `custom-${cleanName}-${timestamp}-${random}-${counter}`
+          counter++
+        }
+        
+        return themeId
       },
 
       saveCustomTheme: async (theme: CustomTheme) => {
