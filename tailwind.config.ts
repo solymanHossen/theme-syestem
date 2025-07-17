@@ -8,6 +8,9 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "*.{js,ts,jsx,tsx,mdx}",
   ],
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     extend: {
       colors: {
@@ -73,12 +76,52 @@ const config: Config = {
       },
       animation: {
         "fade-in": "fadeIn 0.3s ease-in-out",
+        "fade-out": "fadeOut 0.3s ease-in-out",
+        "slide-in": "slideIn 0.3s ease-out",
+        "slide-out": "slideOut 0.3s ease-out",
+        "scale-in": "scaleIn 0.2s ease-out",
+        "scale-out": "scaleOut 0.2s ease-out",
+        "theme-switch": "themeSwitch 0.5s ease-in-out",
       },
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
         },
+        fadeOut: {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
+        slideIn: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+        slideOut: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+        scaleIn: {
+          "0%": { transform: "scale(0.95)", opacity: "0" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+        scaleOut: {
+          "0%": { transform: "scale(1)", opacity: "1" },
+          "100%": { transform: "scale(0.95)", opacity: "0" },
+        },
+        themeSwitch: {
+          "0%": { transform: "rotate(0deg)" },
+          "50%": { transform: "rotate(180deg) scale(1.1)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+      },
+      transitionProperty: {
+        'theme': 'background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter',
+      },
+      transitionTimingFunction: {
+        'theme': 'cubic-bezier(0.4, 0, 0.2, 1)',
+      },
+      transitionDuration: {
+        'theme': '200ms',
       },
     },
   },
