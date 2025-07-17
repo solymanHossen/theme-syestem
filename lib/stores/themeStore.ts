@@ -9,6 +9,7 @@ interface ThemeStore {
   themes: CustomTheme[]
   isLoading: boolean
   error: string | null
+  isInitialized: boolean
 
   // Actions
   setActiveTheme: (themeId: string) => Promise<void>
@@ -23,6 +24,7 @@ interface ThemeStore {
   updateCustomTheme: (theme: CustomTheme) => Promise<CustomTheme>
   deleteCustomTheme: (themeId: string) => Promise<void>
   generateUniqueThemeId: (baseName: string) => string
+  initialize: () => Promise<void>
 
   // Getters
   getCurrentTheme: () => CustomTheme
@@ -39,6 +41,56 @@ export const useThemeStore = create<ThemeStore>()(
       themes: predefinedThemes,
       isLoading: false,
       error: null,
+      isInitialized: false,
+
+      initialize: async () => {
+        if (get().isInitialized) return
+        
+        set({ isLoading: true, error: null })
+        
+        try {
+          // Load all themes first
+          await get().loadAllThemes()
+          
+          // Then load theme settings from the API
+          const response = await fetch("/api/v1/themes/settings")
+          
+          if (response.ok) {
+            const data = await response.json()
+            const themeId = data.themeId || "minimal-white"
+            const mode = data.mode === "dark" ? "dark" : "light"
+            set({ activeThemeId: themeId, mode, isInitialized: true })
+          } else {
+            // If API fails, try to load from localStorage as fallback
+            const storedSettings = localStorage.getItem("theme-settings")
+            if (storedSettings) {
+              const { themeId, mode } = JSON.parse(storedSettings)
+              set({ activeThemeId: themeId || "minimal-white", mode: mode || "light", isInitialized: true })
+            } else {
+              set({ activeThemeId: "minimal-white", mode: "light", isInitialized: true })
+            }
+          }
+        } catch (error) {
+          console.error("Failed to initialize theme:", error)
+          
+          // Fallback to localStorage
+          try {
+            const storedSettings = localStorage.getItem("theme-settings")
+            if (storedSettings) {
+              const { themeId, mode } = JSON.parse(storedSettings)
+              set({ activeThemeId: themeId || "minimal-white", mode: mode || "light", isInitialized: true })
+            } else {
+              set({ activeThemeId: "minimal-white", mode: "light", isInitialized: true })
+            }
+          } catch {
+            set({ activeThemeId: "minimal-white", mode: "light", isInitialized: true })
+          }
+          
+          set({ error: "Failed to initialize theme settings" })
+        } finally {
+          set({ isLoading: false })
+        }
+      },
 
       setActiveTheme: async (themeId: string) => {
         set({ activeThemeId: themeId, previewTheme: null })
@@ -99,33 +151,8 @@ export const useThemeStore = create<ThemeStore>()(
       },
 
       loadThemeSettings: async () => {
-        set({ isLoading: true, error: null })
-
-        try {
-          // Load all themes first
-          await get().loadAllThemes()
-          
-          // Then load settings
-          const response = await fetch("/api/v1/themes/settings")
-
-          if (response.ok) {
-            const data = await response.json()
-            const themeId = data.themeId || "minimal-white"
-            const mode = data.mode === "dark" ? "dark" : "light"
-            set({ activeThemeId: themeId, mode })
-          } else {
-            set({ activeThemeId: "minimal-white", mode: "light" })
-          }
-        } catch (error) {
-          console.error("Failed to load theme settings:", error)
-          set({
-            error: "Failed to load theme settings",
-            activeThemeId: "minimal-white",
-            mode: "light",
-          })
-        } finally {
-          set({ isLoading: false })
-        }
+        // Use the initialize function instead
+        await get().initialize()
       },
 
       saveThemeSettings: async (themeId: string, mode: "light" | "dark") => {
@@ -298,7 +325,15 @@ export const useThemeStore = create<ThemeStore>()(
       partialize: (state) => ({
         activeThemeId: state.activeThemeId,
         mode: state.mode,
+        isInitialized: false, // Always start as not initialized to force API fetch
       }),
+      // Trigger initialization after hydration
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.isInitialized = false
+          // Don't auto-initialize here, let the component handle it
+        }
+      },
     },
   ),
 )
