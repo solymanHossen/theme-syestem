@@ -7,11 +7,12 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: ["class", "data-theme"],
   theme: {
     extend: {
-      // Performance: Use CSS custom properties for dynamic theming
+      // CSS Variables-based theming system
       colors: {
-        // Theme-aware colors using CSS variables
+        // Core theme colors using RGB space for better performance
         "theme-primary": "rgb(var(--theme-primary) / <alpha-value>)",
         "theme-secondary": "rgb(var(--theme-secondary) / <alpha-value>)",
         "theme-background": "rgb(var(--theme-background) / <alpha-value>)",
@@ -24,7 +25,7 @@ const config: Config = {
         "theme-warning": "rgb(var(--theme-warning) / <alpha-value>)",
         "theme-error": "rgb(var(--theme-error) / <alpha-value>)",
 
-        // shadcn/ui colors
+        // shadcn/ui compatible colors
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -48,6 +49,24 @@ const config: Config = {
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        chart: {
+          "1": "hsl(var(--chart-1))",
+          "2": "hsl(var(--chart-2))",
+          "3": "hsl(var(--chart-3))",
+          "4": "hsl(var(--chart-4))",
+          "5": "hsl(var(--chart-5))",
+        },
+      },
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },

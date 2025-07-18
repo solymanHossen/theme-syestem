@@ -1,18 +1,21 @@
 "use client"
 
+import { Eye, EyeOff, Palette, Settings, Plus, Search, Filter } from "lucide-react"
 import { useEffect, useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+
+import { useTheme } from "@/components/theme-provider"
 import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Eye, EyeOff, Palette, Settings, Plus, Search, Filter } from "lucide-react"
-import { ThemePreviewCard } from "./theme-preview-card"
-import { ThemeCustomizer } from "./theme-customizer"
-import { themes, themeCategories, type CustomTheme } from "@/lib/themeData"
+import { Separator } from "@/components/ui/separator"
 import { useThemeStore } from "@/lib/stores/themeStore"
-import { useTheme } from "@/components/theme-provider"
+import { themes, themeCategories, type CustomTheme } from "@/lib/themeData"
+
+import { ThemeCustomizer } from "./theme-customizer"
+import { ThemePreviewCard } from "./theme-preview-card"
+
 
 export function ThemeDashboard() {
   const {
@@ -26,7 +29,7 @@ export function ThemeDashboard() {
     saveCustomTheme,
     updateCustomTheme,
     generateUniqueThemeId,
-    isLoading,
+    isLoading: _isLoading,
     error,
   } = useThemeStore()
 
@@ -55,13 +58,13 @@ export function ThemeDashboard() {
     try {
       let savedTheme: CustomTheme
       
-      if (customizingTheme && customizingTheme.isCustom) {
+      if (customizingTheme?.isCustom) {
         // Update existing custom theme - use the original theme ID
         const themeToUpdate = { ...theme, id: customizingTheme.id }
         savedTheme = await updateCustomTheme(themeToUpdate)
       } else {
         // Create new custom theme from predefined theme or completely new
-        let newTheme = { ...theme }
+        const newTheme = { ...theme }
         
         // If customizing a predefined theme, create a unique ID and name
         if (customizingTheme && !customizingTheme.isCustom) {

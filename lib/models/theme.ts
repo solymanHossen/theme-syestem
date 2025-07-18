@@ -292,6 +292,6 @@ const ThemeSettingsSchema = new Schema({
 })
 
 // Export models
-export const CustomTheme = mongoose.models.CustomTheme || mongoose.model<ICustomTheme>('CustomTheme', CustomThemeSchema)
-export const ActiveTheme = mongoose.models.ActiveTheme || mongoose.model<IActiveTheme>('ActiveTheme', ActiveThemeSchema)
-export const ThemeSettings = mongoose.models.ThemeSettings || mongoose.model<IThemeSettings>('ThemeSettings', ThemeSettingsSchema)
+export const CustomTheme = mongoose.models.CustomTheme ?? mongoose.model<ICustomTheme>('CustomTheme', CustomThemeSchema)
+export const ActiveTheme = mongoose.models.ActiveTheme ?? mongoose.model<IActiveTheme>('ActiveTheme', ActiveThemeSchema)
+export const ThemeSettings = mongoose.models.ThemeSettings ?? mongoose.model<IThemeSettings>('ThemeSettings', ThemeSettingsSchema)

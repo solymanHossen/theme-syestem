@@ -1,38 +1,34 @@
 'use client'
 
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Badge } from '@/components/ui/badge'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { CustomTheme } from '@/lib/themeData'
-import { 
-  ThemeGallery, 
-  ThemeQuickActions, 
-  ThemeEditorModal,
-  ThemeActionCard
-} from '@/components/modern/theme-action-components'
-import { AdvancedPaletteSwitcher } from '@/components/ui/advanced-palette-switcher'
 import { 
   Palette, 
   Settings, 
   Users, 
-  BarChart3, 
-  Plus,
+  BarChart3,
   Menu,
   Search,
   Bell,
   Home,
   Layers,
-  FileText,
-  Database,
   Cpu,
   Zap,
   Shield,
   Globe
 } from 'lucide-react'
+import { useState } from 'react'
+
+import { 
+  ThemeGallery, 
+  ThemeQuickActions, 
+  ThemeEditorModal
+} from '@/components/modern/theme-action-components'
+import { AdvancedPaletteSwitcher } from '@/components/ui/advanced-palette-switcher'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Sheet, SheetContent } from '@/components/ui/sheet'
+import { CustomTheme } from '@/lib/themeData'
 
 interface AdminDashboardProps {
   themes: CustomTheme[]
@@ -142,7 +138,7 @@ export function AdminDashboard({
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {themes.find(t => t.id === activeThemeId)?.name || 'None'}
+                    {themes.find(t => t.id === activeThemeId)?.name ?? 'None'}
                   </div>
                   <p className="text-xs text-muted-foreground">
                     Currently applied

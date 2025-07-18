@@ -1,6 +1,7 @@
+import { TrendingUp, Users, ShoppingBag, DollarSign } from "lucide-react"
+
 import { AdminLayout } from "@/components/admin/admin-layout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { TrendingUp, Users, ShoppingBag, DollarSign } from "lucide-react"
 
 export default function AdminAnalyticsPage() {
   return (

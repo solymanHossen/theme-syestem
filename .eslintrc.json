@@ -3,21 +3,53 @@
     "next/core-web-vitals",
     "next/typescript"
   ],
+  "plugins": [
+    "unused-imports",
+    "import"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "rules": {
     // React 19 specific rules
     "react/no-unknown-property": "off",
     "react/prop-types": "off",
     
-    // Performance rules
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": [
+    // Import/Export rules
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
       "warn",
       {
-        "argsIgnorePattern": "^_",
+        "vars": "all",
         "varsIgnorePattern": "^_",
-        "caughtErrorsIgnorePattern": "^_"
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
       }
     ],
+    "import/no-duplicates": "error",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    
+    // Performance rules
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off",
     
     // Best practices
     "prefer-const": "error",

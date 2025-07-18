@@ -1,19 +1,5 @@
 'use client'
 
-import { useActionState, useOptimistic, startTransition, useEffect } from 'react'
-import { useFormStatus } from 'react-dom'
-import { saveCustomThemeAction, setActiveThemeAction, deleteCustomThemeAction } from '@/lib/actions/theme-actions'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import { CustomTheme } from '@/lib/themeData'
-import { toast } from 'sonner'
-import { useState } from 'react'
 import { 
   Palette, 
   CheckCircle, 
@@ -24,12 +10,25 @@ import {
   Upload, 
   Plus,
   Copy,
-  Eye,
-  Settings,
   Loader2,
   AlertCircle,
   Check
 } from 'lucide-react'
+import { useActionState, useOptimistic, startTransition, useEffect , useState } from 'react'
+import { useFormStatus } from 'react-dom'
+import { toast } from 'sonner'
+
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
+import { saveCustomThemeAction, setActiveThemeAction, deleteCustomThemeAction } from '@/lib/actions/theme-actions'
+import { CustomTheme } from '@/lib/themeData'
+
 
 // Types
 type OptimisticThemeAction = {
@@ -38,7 +37,7 @@ type OptimisticThemeAction = {
   mode?: 'light' | 'dark'
 }
 
-type ActionResult = {
+type _ActionResult = {
   success: boolean
   message: string
   error?: string
@@ -88,7 +87,7 @@ function LoadingState({ isLoading, children }: { isLoading: boolean; children: R
 function ResponsiveModal({ 
   trigger, 
   title, 
-  description, 
+  description: _description, 
   open, 
   onOpenChange, 
   children 
@@ -363,7 +362,7 @@ export function ThemeActionCard({
     try {
       await switchTheme(theme)
       toast.success('Theme activated successfully')
-    } catch (error) {
+    } catch {
       toast.error('Failed to activate theme')
     }
   }
@@ -372,7 +371,7 @@ export function ThemeActionCard({
     try {
       await deleteCustomTheme(theme.id)
       toast.success('Theme deleted successfully')
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete theme')
     }
   }

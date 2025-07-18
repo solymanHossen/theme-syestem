@@ -1,13 +1,13 @@
 "use client"
 
 import { AdminLayout } from "@/components/admin/admin-layout"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useTheme } from "@/components/theme-provider"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { useTheme } from "@/components/theme-provider"
 
 export default function AdminSettingsPage() {
   const { mode } = useTheme()

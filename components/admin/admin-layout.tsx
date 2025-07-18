@@ -1,16 +1,17 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
 import { Home, Settings, Palette, Users, ShoppingBag, BarChart3, Menu, X, LogOut, Bell } from "lucide-react"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { useTheme } from "@/components/theme-provider"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import type React from "react"
+import { useState } from "react"
+
+import { useTheme } from "@/components/theme-provider"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
+
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -133,7 +134,7 @@ export function AdminLayout({ children, currentPage = "dashboard" }: AdminLayout
             </Button>
             <div>
               <h1 className="text-xl font-semibold themed-text" style={{ color: currentTheme.palette.text }}>
-                {sidebarItems.find((item) => item.id === currentPage)?.label || "Dashboard"}
+                {sidebarItems.find((item) => item.id === currentPage)?.label ?? "Dashboard"}
               </h1>
               <p className="text-sm" style={{ color: currentTheme.palette.muted }}>
                 Manage your eCommerce store

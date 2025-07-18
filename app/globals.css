@@ -112,6 +112,141 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 300ms;
   }
+
+  /* Picture system utilities */
+  .picture-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .picture-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--theme-card);
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .picture-error {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--theme-card);
+    color: var(--theme-muted);
+  }
+
+  .picture-zoom {
+    cursor: zoom-in;
+    transition: transform 0.3s ease;
+  }
+
+  .picture-zoom:hover {
+    transform: scale(1.05);
+  }
+
+  /* Image gallery styles */
+  .gallery-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .gallery-masonry {
+    column-count: 1;
+    column-gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .gallery-masonry {
+      column-count: 2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .gallery-masonry {
+      column-count: 3;
+    }
+  }
+
+  .gallery-item {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+
+  /* Lightbox styles */
+  .lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: hidden;
+  }
+
+  .lightbox-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+  }
+
+  /* Avatar enhancements */
+  .avatar-ring {
+    box-shadow: 0 0 0 2px var(--theme-background), 0 0 0 4px var(--theme-primary);
+  }
+
+  .avatar-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: 2px solid var(--theme-background);
+    border-radius: 50%;
+  }
+
+  /* Responsive image utilities */
+  .responsive-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .aspect-square {
+    aspect-ratio: 1 / 1;
+  }
+
+  .aspect-video {
+    aspect-ratio: 16 / 9;
+  }
+
+  .aspect-photo {
+    aspect-ratio: 4 / 3;
+  }
+
+  .aspect-wide {
+    aspect-ratio: 21 / 9;
+  }
+
+  /* Performance optimizations */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .gpu-accelerated {
+    transform: translateZ(0);
+  }
 }
 
 @layer utilities {

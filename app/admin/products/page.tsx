@@ -1,8 +1,9 @@
-import { AdminLayout } from "@/components/admin/admin-layout"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Plus, Edit, Trash2, Eye } from "lucide-react"
+
+import { AdminLayout } from "@/components/admin/admin-layout"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 const mockProducts = [
   {

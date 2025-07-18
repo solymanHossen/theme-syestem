@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
-import connectToDatabase from "@/lib/mongoose"
+
 import { CustomTheme } from "@/lib/models/theme"
+import connectToDatabase from "@/lib/mongoose"
 
 export async function POST() {
   try {

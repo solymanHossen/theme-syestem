@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
-import connectToDatabase from "@/lib/mongoose"
+
 import { CustomTheme } from "@/lib/models/theme"
+import connectToDatabase from "@/lib/mongoose"
 import { themes } from "@/lib/themeData"
 
 export async function GET() {
@@ -15,7 +16,7 @@ export async function GET() {
     // If no themes in database, use predefined themes from themeData.ts
     if (dbThemes.length === 0) {
       return NextResponse.json({
-        themes: themes,
+        themes,
         count: themes.length,
         predefinedCount: themes.length,
         customCount: 0,
@@ -43,7 +44,7 @@ export async function GET() {
     
     // Fallback to predefined themes on error
     return NextResponse.json({
-      themes: themes,
+      themes,
       count: themes.length,
       predefinedCount: themes.length,
       customCount: 0,

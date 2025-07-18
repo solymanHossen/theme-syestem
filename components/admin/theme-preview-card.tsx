@@ -1,10 +1,11 @@
 "use client"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Eye, Check, Palette, Settings2, Sun, Moon } from "lucide-react"
-import type { CustomTheme } from "@/lib/themeData"
+
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useThemeStore } from "@/lib/stores/themeStore"
+import type { CustomTheme } from "@/lib/themeData"
 
 interface ThemePreviewCardProps {
   theme: CustomTheme
@@ -21,7 +22,7 @@ export function ThemePreviewCard({
   isAdmin = false,
   onCustomize,
 }: ThemePreviewCardProps) {
-  const { setPreviewTheme, setActiveTheme, clearPreview, isLoading } = useThemeStore()
+  const { setPreviewTheme, setActiveTheme, clearPreview: _clearPreview, isLoading } = useThemeStore()
 
   const handlePreview = () => {
     setPreviewTheme(theme)
@@ -31,7 +32,7 @@ export function ThemePreviewCard({
     await setActiveTheme(theme.id)
   }
 
-  const currentThemeMode = theme[(currentMode + "Mode") as keyof CustomTheme] as any
+  const currentThemeMode = theme[(`${currentMode  }Mode`) as keyof CustomTheme] as any
 
   return (
     <Card className="relative overflow-hidden transition-all duration-200 hover:shadow-lg">

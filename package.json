@@ -14,7 +14,13 @@
     "seed": "tsx scripts/seed-database.ts",
     "db:status": "curl -X GET http://localhost:3000/api/v1/admin/status",
     "db:seed": "curl -X POST http://localhost:3000/api/v1/admin/seed",
-    "db:cleanup": "curl -X POST http://localhost:3000/api/v1/themes/cleanup"
+    "db:cleanup": "curl -X POST http://localhost:3000/api/v1/themes/cleanup",
+    "prune": "npx ts-prune | grep -v 'used in module'",
+    "cleanup": "./scripts/cleanup-codebase.sh",
+    "unused-imports": "npx eslint --ext .ts,.tsx --rule 'unused-imports/no-unused-imports: error' .",
+    "format": "npx prettier --write . --ignore-path .gitignore",
+    "check-deps": "npx depcheck",
+    "audit-full": "npm run lint && npm run type-check && npm run prune && npm run check-deps"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -77,10 +83,19 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
+    "depcheck": "^1.4.7",
     "eslint": "^8",
     "eslint-config-next": "^15.2.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
     "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
     "tailwindcss": "^4.1.11",
+    "ts-prune": "^0.10.3",
     "tsx": "^4.20.3",
     "typescript": "^5"
   }

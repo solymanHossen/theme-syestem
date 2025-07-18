@@ -1090,8 +1090,6 @@ export const themes: CustomTheme[] = [
   },
 ]
 
-export const defaultTheme = themes[0] // minimal-white as default
-
 export const themeCategories = [
   { id: "all", name: "All Themes", count: themes.length },
   { id: "outdoor", name: "Outdoor", count: themes.filter((t) => t.category === "outdoor").length },

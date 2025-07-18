@@ -1,11 +1,12 @@
 "use client"
+import Link from "next/link"
+
 import { HeroSection } from "@/components/ecommerce/hero-section"
 import { ProductCard } from "@/components/ecommerce/product-card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { useTheme } from "@/components/theme-provider"
-import Link from "next/link"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
 // Mock product data
 const products = [
@@ -141,13 +142,9 @@ export default function HomePage() {
           <div className="text-center mt-12">
             <Button
               size="lg"
-              variant="outline"
-              className="themed-button bg-transparent"
-              style={{
-                borderColor: currentTheme.palette.border,
-                color: currentTheme.palette.text,
-                backgroundColor: currentTheme.palette.background,
-              }}
+              variant="default"
+              className=" "
+            
             >
               View All Products
             </Button>

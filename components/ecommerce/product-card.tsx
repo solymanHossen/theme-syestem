@@ -1,9 +1,12 @@
 "use client"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+
 import { Star, ShoppingCart } from "lucide-react"
+
 import { useTheme } from "@/components/theme-provider"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Picture } from "@/components/ui/picture"
 
 interface Product {
   id: string
@@ -28,10 +31,18 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className="group overflow-hidden transition-all duration-200 hover:shadow-lg themed-card">
       <div className="aspect-square overflow-hidden">
-        <img
+        <Picture
           src={product.image || "/placeholder.svg"}
           alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+          width={300}
+          height={300}
+          aspectRatio="1/1"
+          objectFit="cover"
+          enableZoom={true}
+          rounded="none"
+          className="w-full h-full transition-transform duration-200 group-hover:scale-105"
+          fallback="/placeholder.svg"
+          placeholder="/placeholder.svg"
         />
       </div>
 

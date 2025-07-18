@@ -1,17 +1,5 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
 import {
   Palette,
   Eye,
@@ -27,8 +15,20 @@ import {
   Component,
   Settings2,
 } from "lucide-react"
-import type { CustomTheme } from "@/lib/themeData"
+import type React from "react"
+import { useState } from "react"
+
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Textarea } from "@/components/ui/textarea"
 import { useThemeStore } from "@/lib/stores/themeStore"
+import type { CustomTheme } from "@/lib/themeData"
 import { themeCategories } from "@/lib/themeData"
 
 interface ThemeCustomizerProps {
@@ -38,10 +38,10 @@ interface ThemeCustomizerProps {
 }
 
 export function ThemeCustomizer({ theme, onSave, onCancel }: ThemeCustomizerProps) {
-  const { setPreviewTheme, generateUniqueThemeId, isLoading, error } = useThemeStore()
+  const { setPreviewTheme, generateUniqueThemeId: _generateUniqueThemeId, isLoading: _isLoading, error } = useThemeStore()
   
   const [customTheme, setCustomTheme] = useState<CustomTheme>(
-    theme || {
+    theme ?? {
       id: "", // Will be generated when saving
       name: "Custom Theme",
       description: "My custom theme",
@@ -178,7 +178,7 @@ export function ThemeCustomizer({ theme, onSave, onCancel }: ThemeCustomizerProp
   }
 
   const updatePalette = (mode: "light" | "dark", key: string, value: string) => {
-    const modeKey = (mode + "Mode") as keyof CustomTheme
+    const modeKey = (`${mode  }Mode`) as keyof CustomTheme
     const currentMode = customTheme[modeKey] as any
     updateTheme({
       [modeKey]: {
@@ -229,7 +229,7 @@ export function ThemeCustomizer({ theme, onSave, onCancel }: ThemeCustomizerProp
 
   const exportTheme = () => {
     const dataStr = JSON.stringify(customTheme, null, 2)
-    const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr)
+    const dataUri = `data:application/json;charset=utf-8,${  encodeURIComponent(dataStr)}`
     const exportFileDefaultName = `${customTheme.name.toLowerCase().replace(/\s+/g, "-")}-theme.json`
 
     const linkElement = document.createElement("a")
@@ -291,7 +291,7 @@ export function ThemeCustomizer({ theme, onSave, onCancel }: ThemeCustomizerProp
     "Ubuntu Mono, Consolas, monospace",
   ]
 
-  const currentModeData = customTheme[(activeMode + "Mode") as keyof CustomTheme] as any
+  const currentModeData = customTheme[(`${activeMode  }Mode`) as keyof CustomTheme] as any
 
   const handleSave = async () => {
     setIsSaving(true)

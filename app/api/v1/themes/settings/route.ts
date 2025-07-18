@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
-import connectToDatabase from "@/lib/mongoose"
+
 import { ThemeSettings } from "@/lib/models/theme"
+import connectToDatabase from "@/lib/mongoose"
 
 export async function GET() {
   try {
@@ -9,13 +10,11 @@ export async function GET() {
     let settings = await ThemeSettings.findOne()
     
     // If no settings exist, create default ones
-    if (!settings) {
-      settings = await ThemeSettings.create({
-        themeId: "minimal-white",
-        mode: "light",
-        updatedAt: new Date()
-      })
-    }
+    settings ??= await ThemeSettings.create({
+      themeId: "minimal-white",
+      mode: "light",
+      updatedAt: new Date()
+    })
 
     return NextResponse.json({
       themeId: settings.themeId,

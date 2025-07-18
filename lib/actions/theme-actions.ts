@@ -1,10 +1,10 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import connectToDatabase from '@/lib/mongoose'
-import { CustomTheme, ActiveTheme, ThemeSettings } from '@/lib/models/theme'
-import { redirect } from 'next/navigation'
 import { z } from 'zod'
+
+import { CustomTheme, ActiveTheme, ThemeSettings } from '@/lib/models/theme'
+import connectToDatabase from '@/lib/mongoose'
 
 // Schema validation for theme actions
 const ThemeSchema = z.object({
@@ -72,7 +72,7 @@ export async function saveCustomThemeAction(
     // Check if theme exists
     const existingTheme = await CustomTheme.findOne({ id: validatedTheme.id })
     
-    if (existingTheme && existingTheme.isCustom) {
+    if (existingTheme?.isCustom) {
       // Update existing custom theme
       await CustomTheme.findOneAndUpdate(
         { id: validatedTheme.id },

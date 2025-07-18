@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
-import connectToDatabase from "@/lib/mongoose"
+
 import { ActiveTheme } from "@/lib/models/theme"
+import connectToDatabase from "@/lib/mongoose"
 
 export async function GET() {
   try {
@@ -9,12 +10,10 @@ export async function GET() {
     let activeTheme = await ActiveTheme.findOne()
     
     // If no active theme exists, create a default one
-    if (!activeTheme) {
-      activeTheme = await ActiveTheme.create({
-        themeId: "minimal-white",
-        updatedAt: new Date()
-      })
-    }
+    activeTheme ??= await ActiveTheme.create({
+      themeId: "minimal-white",
+      updatedAt: new Date()
+    })
 
     return NextResponse.json({
       themeId: activeTheme.themeId,

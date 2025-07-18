@@ -1,7 +1,8 @@
 "use client"
-import { Button } from "@/components/ui/button"
 import { ArrowRight, Mountain } from "lucide-react"
+
 import { useTheme } from "@/components/theme-provider"
+import { Button } from "@/components/ui/button"
 
 export function HeroSection() {
   const { currentTheme } = useTheme()

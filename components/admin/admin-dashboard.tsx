@@ -1,12 +1,14 @@
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ShoppingBag, Users, DollarSign, TrendingUp, Eye, Settings, Palette, Moon, Sun } from "lucide-react"
+import Link from "next/link"
+
+import { useTheme } from "@/components/theme-provider"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ShoppingBag, Users, DollarSign, TrendingUp, Eye, Settings, Palette, Moon, Sun } from "lucide-react"
-import { useTheme } from "@/components/theme-provider"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useThemeStore } from "@/lib/stores/themeStore"
-import Link from "next/link"
+
 
 export function AdminDashboard() {
   const { currentTheme, mode } = useTheme()
@@ -59,7 +61,7 @@ export function AdminDashboard() {
             Welcome back, Admin! 👋
           </h1>
           <p className="text-muted-foreground mt-1" style={{ color: currentTheme.palette.muted }}>
-            Here's what's happening with your store today.
+            Here&apos;s what&apos;s happening with your store today.
           </p>
         </div>
         <div className="flex items-center gap-2">

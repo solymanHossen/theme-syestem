@@ -1,24 +1,23 @@
 'use client'
 
+import { 
+  Palette, 
+  Copy, 
+  Download, 
+  RotateCcw,
+  Moon,
+  Sun,
+  Shuffle
+} from 'lucide-react'
 import { useState } from 'react'
+
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Badge } from '@/components/ui/badge'
 import { CustomTheme } from '@/lib/themeData'
-import { 
-  Palette, 
-  Copy, 
-  Download, 
-  Upload, 
-  RotateCcw,
-  Lightbulb,
-  Moon,
-  Sun,
-  Shuffle
-} from 'lucide-react'
 
 type PaletteColor = {
   name: string
@@ -67,7 +66,7 @@ export function AdvancedPaletteSwitcher({
     onThemeChange(updatedTheme)
   }
   
-  const copyColorToClipboard = async (color: string, colorName: string) => {
+  const copyColorToClipboard = async (color: string, _colorName: string) => {
     try {
       await navigator.clipboard.writeText(color)
       setCopiedColor(color)
@@ -306,7 +305,7 @@ export function AdvancedPaletteSwitcher({
               <div className="text-sm text-muted-foreground space-y-1">
                 <p>• Ensure sufficient contrast between text and background colors</p>
                 <p>• Test your color combinations for color blindness accessibility</p>
-                <p>• Consider using tools like WebAIM's Contrast Checker</p>
+                <p>• Consider using tools like WebAIM&apos;s Contrast Checker</p>
               </div>
             </div>
           </TabsContent>

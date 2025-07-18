@@ -1,5 +1,6 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
+
 import { type CustomTheme, type ThemeMode, themes as predefinedThemes } from "../themeData"
 
 interface ThemeStore {
@@ -57,7 +58,7 @@ export const useThemeStore = create<ThemeStore>()(
           
           if (response.ok) {
             const data = await response.json()
-            const themeId = data.themeId || "minimal-white"
+            const themeId = data.themeId ?? "minimal-white"
             const mode = data.mode === "dark" ? "dark" : "light"
             set({ activeThemeId: themeId, mode, isInitialized: true })
           } else {
@@ -65,7 +66,7 @@ export const useThemeStore = create<ThemeStore>()(
             const storedSettings = localStorage.getItem("theme-settings")
             if (storedSettings) {
               const { themeId, mode } = JSON.parse(storedSettings)
-              set({ activeThemeId: themeId || "minimal-white", mode: mode || "light", isInitialized: true })
+              set({ activeThemeId: themeId ?? "minimal-white", mode: mode || "light", isInitialized: true })
             } else {
               set({ activeThemeId: "minimal-white", mode: "light", isInitialized: true })
             }
@@ -78,7 +79,7 @@ export const useThemeStore = create<ThemeStore>()(
             const storedSettings = localStorage.getItem("theme-settings")
             if (storedSettings) {
               const { themeId, mode } = JSON.parse(storedSettings)
-              set({ activeThemeId: themeId || "minimal-white", mode: mode || "light", isInitialized: true })
+              set({ activeThemeId: themeId ?? "minimal-white", mode: mode || "light", isInitialized: true })
             } else {
               set({ activeThemeId: "minimal-white", mode: "light", isInitialized: true })
             }
@@ -135,7 +136,7 @@ export const useThemeStore = create<ThemeStore>()(
           const response = await fetch("/api/v1/themes")
           if (response.ok) {
             const data = await response.json()
-            const themes = data.themes || predefinedThemes
+            const themes = data.themes ?? predefinedThemes
             
             // Deduplicate themes by ID to prevent React key errors
             const uniqueThemes = themes.reduce((acc: CustomTheme[], theme: CustomTheme) => {
@@ -230,7 +231,7 @@ export const useThemeStore = create<ThemeStore>()(
 
           if (!response.ok) {
             const errorData = await response.json()
-            throw new Error(errorData.error || "Failed to save custom theme")
+            throw new Error(errorData.error ?? "Failed to save custom theme")
           }
 
           const data = await response.json()
@@ -268,7 +269,7 @@ export const useThemeStore = create<ThemeStore>()(
 
           if (!response.ok) {
             const errorData = await response.json()
-            throw new Error(errorData.error || "Failed to update custom theme")
+            throw new Error(errorData.error ?? "Failed to update custom theme")
           }
 
           const data = await response.json()
@@ -306,7 +307,7 @@ export const useThemeStore = create<ThemeStore>()(
 
           if (!response.ok) {
             const errorData = await response.json()
-            throw new Error(errorData.error || "Failed to delete custom theme")
+            throw new Error(errorData.error ?? "Failed to delete custom theme")
           }
 
           // Update themes list
@@ -343,7 +344,7 @@ export const useThemeStore = create<ThemeStore>()(
       getCurrentThemeMode: () => {
         const state = get()
         const theme = state.getCurrentTheme()
-        return theme[(state.mode + "Mode") as keyof CustomTheme] as ThemeMode
+        return theme[(`${state.mode  }Mode`) as keyof CustomTheme] as ThemeMode
       },
 
       getThemeById: (id: string) => {

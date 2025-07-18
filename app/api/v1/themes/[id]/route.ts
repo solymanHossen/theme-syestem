@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
-import connectToDatabase from "@/lib/mongoose"
+
 import { CustomTheme } from "@/lib/models/theme"
+import connectToDatabase from "@/lib/mongoose"
 import { themes } from "@/lib/themeData"
 
 export async function GET(

@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
-import connectToDatabase from "@/lib/mongoose"
+
 import { CustomTheme } from "@/lib/models/theme"
+import connectToDatabase from "@/lib/mongoose"
 
 export async function GET() {
   try {
@@ -11,7 +12,7 @@ export async function GET() {
       .lean()
 
     return NextResponse.json({
-      themes: themes,
+      themes,
       count: themes.length,
     })
   } catch (error) {
