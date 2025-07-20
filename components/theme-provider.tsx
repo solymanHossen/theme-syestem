@@ -5,6 +5,7 @@ import { createContext, useContext, useEffect } from 'react'
 
 import { useThemeStore } from '@/lib/stores/themeStore'
 import type { ThemeMode } from '@/lib/themeData'
+import { applyThemeVariables } from '@/lib/utils/theme'
 
 interface ThemeContextType {
   currentTheme: ThemeMode
@@ -18,6 +19,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const {
+    getCurrentTheme,
     getCurrentThemeMode,
     initialize,
     mode,
@@ -27,7 +29,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     isInitialized,
     isLoading,
   } = useThemeStore()
+  
   const currentTheme = getCurrentThemeMode()
+  const fullTheme = getCurrentTheme() // Get the full theme object for typography, radius, etc.
   const isPreview = previewTheme !== null
 
   useEffect(() => {
@@ -36,37 +40,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [initialize])
 
   useEffect(() => {
-    // Only apply theme when initialized
-    if (!isInitialized) return
+    // Only apply theme when initialized and we have a theme
+    if (!isInitialized || !currentTheme) return
 
     // Apply theme CSS variables to document root
-    const root = document.documentElement
-    const theme = currentTheme
-
-    // Apply color variables
-    root.style.setProperty('--theme-primary', theme.palette.primary)
-    root.style.setProperty('--theme-secondary', theme.palette.secondary)
-    root.style.setProperty('--theme-background', theme.palette.background)
-    root.style.setProperty('--theme-card', theme.palette.card)
-    root.style.setProperty('--theme-border', theme.palette.border)
-    root.style.setProperty('--theme-text', theme.palette.text)
-    root.style.setProperty('--theme-muted', theme.palette.muted)
-    root.style.setProperty('--theme-accent', theme.palette.accent)
-    root.style.setProperty('--theme-success', theme.palette.success)
-    root.style.setProperty('--theme-warning', theme.palette.warning)
-    root.style.setProperty('--theme-error', theme.palette.error)
-
-    // Update document class for dark mode
-    if (mode === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-
-    // Update body background
-    document.body.style.backgroundColor = theme.palette.background
-    document.body.style.color = theme.palette.text
-  }, [currentTheme, mode, isInitialized])
+    applyThemeVariables(currentTheme, mode, fullTheme)
+  }, [currentTheme, mode, isInitialized, fullTheme])
 
   // Show loading state until theme is initialized
   if (!isInitialized && isLoading) {
