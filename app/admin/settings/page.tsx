@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import { AdminLayout } from "@/components/admin/admin-layout"
-import { useTheme } from "@/components/theme-provider"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
+import { AdminLayout } from '@/components/admin/admin-layout'
+import { useTheme } from '@/components/theme-provider'
+import { ThemeToggle } from '@/components/theme-toggle'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Separator } from '@/components/ui/separator'
 
 export default function AdminSettingsPage() {
   const { mode } = useTheme()
@@ -32,11 +32,18 @@ export default function AdminSettingsPage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="store-description">Description</Label>
-                <Input id="store-description" defaultValue="Premium outdoor gear and camping equipment" />
+                <Input
+                  id="store-description"
+                  defaultValue="Premium outdoor gear and camping equipment"
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="store-email">Contact Email</Label>
-                <Input id="store-email" type="email" defaultValue="contact@tentshop.com" />
+                <Input
+                  id="store-email"
+                  type="email"
+                  defaultValue="contact@tentshop.com"
+                />
               </div>
               <Button>Save Changes</Button>
             </CardContent>
@@ -51,7 +58,7 @@ export default function AdminSettingsPage() {
                 <div>
                   <Label>Theme Mode</Label>
                   <p className="text-sm text-muted-foreground">
-                    Currently using {mode === "light" ? "Light" : "Dark"} mode
+                    Currently using {mode === 'light' ? 'Light' : 'Dark'} mode
                   </p>
                 </div>
                 <ThemeToggle />

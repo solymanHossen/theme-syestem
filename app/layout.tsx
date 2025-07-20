@@ -1,17 +1,17 @@
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import type React from "react"
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import type React from 'react'
 
-import "./globals.css"
-import { ClientOnly } from "@/components/client-only"
-import { ThemeProvider } from "@/components/theme-provider"
+import { ClientOnly } from '@/components/client-only'
+import { ThemeProvider } from '@/components/theme-provider'
+import './globals.css'
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "TentShop - Dark/Light Mode",
-  description: "SaaS eCommerce platform with simple dark/light mode toggle",
-    generator: 'v0.dev'
+  title: 'TentShop - Dark/Light Mode',
+  description: 'SaaS eCommerce platform with simple dark/light mode toggle',
+  generator: 'v0.dev',
 }
 
 export default function RootLayout({

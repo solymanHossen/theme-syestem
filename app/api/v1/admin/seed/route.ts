@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server"
+import { NextResponse } from 'next/server'
 
-import { CustomTheme, ActiveTheme, ThemeSettings } from "@/lib/models/theme"
-import connectToDatabase from "@/lib/mongoose"
-import { themes } from "@/lib/themeData"
+import { ActiveTheme, CustomTheme, ThemeSettings } from '@/lib/models/theme'
+import connectToDatabase from '@/lib/mongoose'
+import { themes } from '@/lib/themeData'
 
 export async function POST() {
   try {
@@ -21,14 +21,18 @@ export async function POST() {
     if (predefinedThemes.length > 0) {
       // Use insertMany with ordered: false to handle any duplicate IDs gracefully
       try {
-        const result = await CustomTheme.insertMany(predefinedThemes, { ordered: false })
+        const result = await CustomTheme.insertMany(predefinedThemes, {
+          ordered: false,
+        })
         insertedCount = result.length
       } catch (error: any) {
         // Handle duplicate key errors gracefully
         if (error.code === 11000) {
-          console.warn("Some themes already exist, skipping duplicates")
+          console.warn('Some themes already exist, skipping duplicates')
           // Count how many were actually inserted
-          const existingThemes = await CustomTheme.find({ isCustom: { $ne: true } })
+          const existingThemes = await CustomTheme.find({
+            isCustom: { $ne: true },
+          })
           insertedCount = existingThemes.length
         } else {
           throw error
@@ -40,8 +44,8 @@ export async function POST() {
     const activeTheme = await ActiveTheme.findOne()
     if (!activeTheme) {
       await ActiveTheme.create({
-        themeId: "minimal-white",
-        updatedAt: new Date()
+        themeId: 'minimal-white',
+        updatedAt: new Date(),
       })
     }
 
@@ -49,19 +53,22 @@ export async function POST() {
     const settings = await ThemeSettings.findOne()
     if (!settings) {
       await ThemeSettings.create({
-        themeId: "minimal-white",
-        mode: "light",
-        updatedAt: new Date()
+        themeId: 'minimal-white',
+        mode: 'light',
+        updatedAt: new Date(),
       })
     }
 
     return NextResponse.json({
-      message: "Database seeded successfully",
+      message: 'Database seeded successfully',
       insertedThemes: insertedCount,
       totalPredefinedThemes: themes.length,
     })
   } catch (error) {
-    console.error("Error seeding database:", error)
-    return NextResponse.json({ error: "Failed to seed database" }, { status: 500 })
+    console.error('Error seeding database:', error)
+    return NextResponse.json(
+      { error: 'Failed to seed database' },
+      { status: 500 }
+    )
   }
 }

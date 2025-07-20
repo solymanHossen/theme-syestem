@@ -1,13 +1,14 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { Picture } from "./picture"
-import { Button } from "./button"
-import { Dialog, DialogContent, DialogTrigger } from "./dialog"
-import { cn } from "@/lib/utils"
-import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from "lucide-react"
+import { cn } from '@/lib/utils'
+import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from 'lucide-react'
+import * as React from 'react'
+import { Button } from './button'
+import { Dialog, DialogContent } from './dialog'
+import { Picture } from './picture'
 
-export interface ImageGalleryProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ImageGalleryProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   /** Array of image objects */
   images: {
     src: string
@@ -17,11 +18,11 @@ export interface ImageGalleryProps extends React.HTMLAttributes<HTMLDivElement> 
     description?: string
   }[]
   /** Gallery layout */
-  layout?: "grid" | "masonry" | "carousel"
+  layout?: 'grid' | 'masonry' | 'carousel'
   /** Number of columns for grid layout */
   columns?: 1 | 2 | 3 | 4 | 5 | 6
   /** Gap between images */
-  gap?: "sm" | "md" | "lg"
+  gap?: 'sm' | 'md' | 'lg'
   /** Aspect ratio for images */
   aspectRatio?: string
   /** Enable lightbox */
@@ -39,9 +40,9 @@ export interface ImageGalleryProps extends React.HTMLAttributes<HTMLDivElement> 
   /** Show dots indicator */
   showDots?: boolean
   /** Rounded corners */
-  rounded?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "full"
+  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
   /** Shadow */
-  shadow?: "none" | "sm" | "md" | "lg" | "xl"
+  shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
   /** Custom image component */
   ImageComponent?: React.ComponentType<any>
   /** Custom thumbnail component */
@@ -58,10 +59,10 @@ const ImageGallery = React.forwardRef<HTMLDivElement, ImageGalleryProps>(
   (
     {
       images,
-      layout = "grid",
+      layout = 'grid',
       columns = 3,
-      gap = "md",
-      aspectRatio = "1/1",
+      gap = 'md',
+      aspectRatio = '1/1',
       enableLightbox = true,
       enableZoom = true,
       showThumbnails = true,
@@ -69,8 +70,8 @@ const ImageGallery = React.forwardRef<HTMLDivElement, ImageGalleryProps>(
       autoPlayInterval = 5000,
       showArrows = true,
       showDots = true,
-      rounded = "lg",
-      shadow = "sm",
+      rounded = 'lg',
+      shadow = 'sm',
       ImageComponent,
       ThumbnailComponent,
       onImageClick,
@@ -89,9 +90,9 @@ const ImageGallery = React.forwardRef<HTMLDivElement, ImageGalleryProps>(
 
     // Auto-play functionality
     React.useEffect(() => {
-      if (isAutoPlaying && layout === "carousel") {
+      if (isAutoPlaying && layout === 'carousel') {
         intervalRef.current = setInterval(() => {
-          setCurrentIndex((prev) => (prev + 1) % images.length)
+          setCurrentIndex(prev => (prev + 1) % images.length)
         }, autoPlayInterval)
       } else {
         if (intervalRef.current) {
@@ -112,47 +113,47 @@ const ImageGallery = React.forwardRef<HTMLDivElement, ImageGalleryProps>(
         if (!isLightboxOpen) return
 
         switch (e.key) {
-          case "ArrowLeft":
+          case 'ArrowLeft':
             e.preventDefault()
             goToPrevious()
             break
-          case "ArrowRight":
+          case 'ArrowRight':
             e.preventDefault()
             goToNext()
             break
-          case "Escape":
+          case 'Escape':
             setIsLightboxOpen(false)
             break
-          case "=":
-          case "+":
+          case '=':
+          case '+':
             e.preventDefault()
             zoomIn()
             break
-          case "-":
+          case '-':
             e.preventDefault()
             zoomOut()
             break
         }
       }
 
-      document.addEventListener("keydown", handleKeyDown)
-      return () => document.removeEventListener("keydown", handleKeyDown)
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
     }, [isLightboxOpen])
 
     const goToPrevious = () => {
-      setCurrentIndex((prev) => (prev - 1 + images.length) % images.length)
+      setCurrentIndex(prev => (prev - 1 + images.length) % images.length)
     }
 
     const goToNext = () => {
-      setCurrentIndex((prev) => (prev + 1) % images.length)
+      setCurrentIndex(prev => (prev + 1) % images.length)
     }
 
     const zoomIn = () => {
-      setZoomLevel((prev) => Math.min(prev + 0.5, 3))
+      setZoomLevel(prev => Math.min(prev + 0.5, 3))
     }
 
     const zoomOut = () => {
-      setZoomLevel((prev) => Math.max(prev - 0.5, 0.5))
+      setZoomLevel(prev => Math.max(prev - 0.5, 0.5))
     }
 
     const handleImageClick = (index: number) => {
@@ -165,28 +166,28 @@ const ImageGallery = React.forwardRef<HTMLDivElement, ImageGalleryProps>(
 
     const getGridCols = () => {
       const colsMap = {
-        1: "grid-cols-1",
-        2: "grid-cols-1 md:grid-cols-2",
-        3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-        4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
-        5: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5",
-        6: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6",
+        1: 'grid-cols-1',
+        2: 'grid-cols-1 md:grid-cols-2',
+        3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+        4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
+        5: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
+        6: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6',
       }
       return colsMap[columns]
     }
 
     const getGapClass = () => {
       const gapMap = {
-        sm: "gap-2",
-        md: "gap-4",
-        lg: "gap-6",
+        sm: 'gap-2',
+        md: 'gap-4',
+        lg: 'gap-6',
       }
       return gapMap[gap]
     }
 
     // Grid Layout
     const renderGrid = () => (
-      <div className={cn("grid", getGridCols(), getGapClass())}>
+      <div className={cn('grid', getGridCols(), getGapClass())}>
         {images.map((image, index) => (
           <div
             key={index}
@@ -209,7 +210,7 @@ const ImageGallery = React.forwardRef<HTMLDivElement, ImageGalleryProps>(
 
     // Masonry Layout
     const renderMasonry = () => (
-      <div className={cn("columns-1 md:columns-2 lg:columns-3", getGapClass())}>
+      <div className={cn('columns-1 md:columns-2 lg:columns-3', getGapClass())}>
         {images.map((image, index) => (
           <div
             key={index}
@@ -283,8 +284,8 @@ const ImageGallery = React.forwardRef<HTMLDivElement, ImageGalleryProps>(
               <button
                 key={index}
                 className={cn(
-                  "w-2 h-2 rounded-full transition-colors",
-                  index === currentIndex ? "bg-primary" : "bg-gray-300"
+                  'w-2 h-2 rounded-full transition-colors',
+                  index === currentIndex ? 'bg-primary' : 'bg-gray-300'
                 )}
                 onClick={() => setCurrentIndex(index)}
               />
@@ -300,7 +301,7 @@ const ImageGallery = React.forwardRef<HTMLDivElement, ImageGalleryProps>(
             className="absolute bottom-2 right-2 bg-black/50 hover:bg-black/70 text-white"
             onClick={() => setIsAutoPlaying(!isAutoPlaying)}
           >
-            {isAutoPlaying ? "Pause" : "Play"}
+            {isAutoPlaying ? 'Pause' : 'Play'}
           </Button>
         )}
       </div>
@@ -376,7 +377,8 @@ const ImageGallery = React.forwardRef<HTMLDivElement, ImageGalleryProps>(
             )}
 
             {/* Image info */}
-            {(images[currentIndex]?.title || images[currentIndex]?.description) && (
+            {(images[currentIndex]?.title ||
+              images[currentIndex]?.description) && (
               <div className="absolute bottom-4 left-4 right-4 text-white">
                 {images[currentIndex]?.title && (
                   <h3 className="text-lg font-semibold mb-1">
@@ -398,10 +400,10 @@ const ImageGallery = React.forwardRef<HTMLDivElement, ImageGalleryProps>(
                   <button
                     key={index}
                     className={cn(
-                      "w-12 h-12 rounded-md overflow-hidden border-2 transition-all",
+                      'w-12 h-12 rounded-md overflow-hidden border-2 transition-all',
                       index === currentIndex
-                        ? "border-white scale-110"
-                        : "border-transparent opacity-60 hover:opacity-80"
+                        ? 'border-white scale-110'
+                        : 'border-transparent opacity-60 hover:opacity-80'
                     )}
                     onClick={() => setCurrentIndex(index)}
                   >
@@ -422,22 +424,24 @@ const ImageGallery = React.forwardRef<HTMLDivElement, ImageGalleryProps>(
     if (images.length === 0) {
       return (
         <div className="flex items-center justify-center h-64 bg-gray-100 dark:bg-gray-800 rounded-lg">
-          <p className="text-gray-500 dark:text-gray-400">No images to display</p>
+          <p className="text-gray-500 dark:text-gray-400">
+            No images to display
+          </p>
         </div>
       )
     }
 
     return (
-      <div ref={ref} className={cn("w-full", className)} {...props}>
-        {layout === "grid" && renderGrid()}
-        {layout === "masonry" && renderMasonry()}
-        {layout === "carousel" && renderCarousel()}
+      <div ref={ref} className={cn('w-full', className)} {...props}>
+        {layout === 'grid' && renderGrid()}
+        {layout === 'masonry' && renderMasonry()}
+        {layout === 'carousel' && renderCarousel()}
         {enableLightbox && renderLightbox()}
       </div>
     )
   }
 )
 
-ImageGallery.displayName = "ImageGallery"
+ImageGallery.displayName = 'ImageGallery'
 
 export { ImageGallery }

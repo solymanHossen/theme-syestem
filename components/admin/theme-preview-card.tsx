@@ -1,16 +1,22 @@
-"use client"
-import { Eye, Check, Palette, Settings2, Sun, Moon } from "lucide-react"
+'use client'
+import { Check, Eye, Moon, Palette, Settings2, Sun } from 'lucide-react'
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useThemeStore } from "@/lib/stores/themeStore"
-import type { CustomTheme } from "@/lib/themeData"
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { useThemeStore } from '@/lib/stores/themeStore'
+import type { CustomTheme } from '@/lib/themeData'
 
 interface ThemePreviewCardProps {
   theme: CustomTheme
   isActive: boolean
-  currentMode: "light" | "dark"
+  currentMode: 'light' | 'dark'
   isAdmin?: boolean
   onCustomize?: () => void
 }
@@ -22,7 +28,12 @@ export function ThemePreviewCard({
   isAdmin = false,
   onCustomize,
 }: ThemePreviewCardProps) {
-  const { setPreviewTheme, setActiveTheme, clearPreview: _clearPreview, isLoading } = useThemeStore()
+  const {
+    setPreviewTheme,
+    setActiveTheme,
+    clearPreview: _clearPreview,
+    isLoading,
+  } = useThemeStore()
 
   const handlePreview = () => {
     setPreviewTheme(theme)
@@ -32,7 +43,9 @@ export function ThemePreviewCard({
     await setActiveTheme(theme.id)
   }
 
-  const currentThemeMode = theme[(`${currentMode  }Mode`) as keyof CustomTheme] as any
+  const currentThemeMode = theme[
+    `${currentMode}Mode` as keyof CustomTheme
+  ] as any
 
   return (
     <Card className="relative overflow-hidden transition-all duration-200 hover:shadow-lg">
@@ -57,7 +70,9 @@ export function ThemePreviewCard({
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="text-lg">{theme.name}</CardTitle>
-            <CardDescription className="text-sm mt-1">{theme.description}</CardDescription>
+            <CardDescription className="text-sm mt-1">
+              {theme.description}
+            </CardDescription>
             <Badge variant="outline" className="mt-2 capitalize">
               {theme.category}
             </Badge>
@@ -120,7 +135,9 @@ export function ThemePreviewCard({
 
         {/* Current Mode Preview */}
         <div className="space-y-2">
-          <h4 className="text-sm font-medium">Current Preview ({currentMode === "light" ? "Light" : "Dark"} Mode)</h4>
+          <h4 className="text-sm font-medium">
+            Current Preview ({currentMode === 'light' ? 'Light' : 'Dark'} Mode)
+          </h4>
           <div
             className="p-3 rounded border"
             style={{
@@ -136,7 +153,10 @@ export function ThemePreviewCard({
               >
                 Shop Now
               </div>
-              <p className="text-xs" style={{ color: currentThemeMode.palette.muted }}>
+              <p
+                className="text-xs"
+                style={{ color: currentThemeMode.palette.muted }}
+              >
                 Sample product description text
               </p>
             </div>
@@ -146,21 +166,36 @@ export function ThemePreviewCard({
         {/* Admin Actions */}
         {isAdmin && (
           <div className="flex gap-2 pt-2">
-            <Button variant="outline" size="sm" onClick={handlePreview} className="flex-1 bg-transparent">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handlePreview}
+              className="flex-1 bg-transparent"
+            >
               <Eye className="w-4 h-4 mr-1" />
               Preview
             </Button>
 
             {onCustomize && (
-              <Button variant="outline" size="sm" onClick={onCustomize} className="flex-1 bg-transparent">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onCustomize}
+                className="flex-1 bg-transparent"
+              >
                 <Settings2 className="w-4 h-4 mr-1" />
                 Customize
               </Button>
             )}
 
             {!isActive && (
-              <Button onClick={handleSetActive} disabled={isLoading} size="sm" className="flex-1">
-                {isLoading ? "Setting..." : "Set Active"}
+              <Button
+                onClick={handleSetActive}
+                disabled={isLoading}
+                size="sm"
+                className="flex-1"
+              >
+                {isLoading ? 'Setting...' : 'Set Active'}
               </Button>
             )}
           </div>

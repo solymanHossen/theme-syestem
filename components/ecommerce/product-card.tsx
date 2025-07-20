@@ -1,12 +1,11 @@
-"use client"
+'use client'
 
-import { Star, ShoppingCart } from "lucide-react"
+import { ShoppingCart, Star } from 'lucide-react'
 
-import { useTheme } from "@/components/theme-provider"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Picture } from "@/components/ui/picture"
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Picture } from '@/components/ui/picture'
 
 interface Product {
   id: string
@@ -26,13 +25,11 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { currentTheme } = useTheme()
-
   return (
-    <Card className="group overflow-hidden transition-all duration-200 hover:shadow-lg themed-card">
+    <Card className="group overflow-hidden transition-all duration-200 hover:shadow-lg border-theme-border bg-theme-card">
       <div className="aspect-square overflow-hidden">
         <Picture
-          src={product.image || "/placeholder.svg"}
+          src={product.image || '/placeholder.svg'}
           alt={product.name}
           width={300}
           height={300}
@@ -52,10 +49,16 @@ export function ProductCard({ product }: ProductCardProps) {
             <Badge variant="secondary" className="text-xs mb-2">
               {product.category}
             </Badge>
-            <h3 className="font-semibold line-clamp-2 themed-text">{product.name}</h3>
+            <h3 className="font-semibold line-clamp-2 text-theme-text">
+              {product.name}
+            </h3>
           </div>
-          {product.isNew && <Badge className="bg-green-600 text-white">New</Badge>}
-          {product.isSale && <Badge className="bg-red-600 text-white">Sale</Badge>}
+          {product.isNew && (
+            <Badge className="bg-theme-success text-white">New</Badge>
+          )}
+          {product.isSale && (
+            <Badge className="bg-theme-error text-white">Sale</Badge>
+          )}
         </div>
 
         <div className="flex items-center gap-1">
@@ -64,28 +67,31 @@ export function ProductCard({ product }: ProductCardProps) {
               <Star
                 key={i}
                 className={`w-4 h-4 ${
-                  i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                  i < Math.floor(product.rating)
+                    ? 'fill-theme-warning text-theme-warning'
+                    : 'text-theme-muted'
                 }`}
               />
             ))}
           </div>
-          <span className="text-sm text-muted-foreground">({product.reviews})</span>
+          <span className="text-sm text-theme-muted">({product.reviews})</span>
         </div>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-lg font-bold themed-text" style={{ color: currentTheme.palette.primary }}>
+            <span className="text-lg font-bold text-theme-primary">
               ${product.price}
             </span>
             {product.originalPrice && (
-              <span className="text-sm text-muted-foreground line-through">${product.originalPrice}</span>
+              <span className="text-sm text-theme-muted line-through">
+                ${product.originalPrice}
+              </span>
             )}
           </div>
 
           <Button
             size="sm"
-            className="themed-button text-white"
-            style={{ backgroundColor: currentTheme.palette.primary }}
+            className="text-white bg-theme-primary hover:bg-theme-primary/90 transition-theme"
           >
             <ShoppingCart className="w-4 h-4 mr-1" />
             Add

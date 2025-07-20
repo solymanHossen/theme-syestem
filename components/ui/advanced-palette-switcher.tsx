@@ -1,13 +1,13 @@
 'use client'
 
-import { 
-  Palette, 
-  Copy, 
-  Download, 
-  RotateCcw,
+import {
+  Copy,
+  Download,
   Moon,
+  Palette,
+  RotateCcw,
+  Shuffle,
   Sun,
-  Shuffle
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -32,40 +32,98 @@ interface AdvancedPaletteSwitcherProps {
   className?: string
 }
 
-export function AdvancedPaletteSwitcher({ 
-  theme, 
-  onThemeChange, 
-  className = '' 
+export function AdvancedPaletteSwitcher({
+  theme,
+  onThemeChange,
+  className = '',
 }: AdvancedPaletteSwitcherProps) {
   const [activeMode, setActiveMode] = useState<'light' | 'dark'>('light')
   const [copiedColor, setCopiedColor] = useState<string | null>(null)
-  
-  const currentPalette = activeMode === 'light' ? theme.lightMode.palette : theme.darkMode.palette
-  
+
+  const currentPalette =
+    activeMode === 'light' ? theme.lightMode.palette : theme.darkMode.palette
+
   const paletteColors: PaletteColor[] = [
-    { name: 'Primary', key: 'primary', value: currentPalette.primary, description: 'Main brand color' },
-    { name: 'Secondary', key: 'secondary', value: currentPalette.secondary, description: 'Supporting color' },
-    { name: 'Background', key: 'background', value: currentPalette.background, description: 'Main background' },
-    { name: 'Card', key: 'card', value: currentPalette.card, description: 'Card backgrounds' },
-    { name: 'Text', key: 'text', value: currentPalette.text, description: 'Primary text' },
-    { name: 'Border', key: 'border', value: currentPalette.border, description: 'Element borders' },
-    { name: 'Muted', key: 'muted', value: currentPalette.muted, description: 'Muted backgrounds' },
-    { name: 'Accent', key: 'accent', value: currentPalette.accent, description: 'Accent highlights' },
-    { name: 'Success', key: 'success', value: currentPalette.success, description: 'Success states' },
-    { name: 'Warning', key: 'warning', value: currentPalette.warning, description: 'Warning states' },
-    { name: 'Error', key: 'error', value: currentPalette.error, description: 'Error states' },
+    {
+      name: 'Primary',
+      key: 'primary',
+      value: currentPalette.primary,
+      description: 'Main brand color',
+    },
+    {
+      name: 'Secondary',
+      key: 'secondary',
+      value: currentPalette.secondary,
+      description: 'Supporting color',
+    },
+    {
+      name: 'Background',
+      key: 'background',
+      value: currentPalette.background,
+      description: 'Main background',
+    },
+    {
+      name: 'Card',
+      key: 'card',
+      value: currentPalette.card,
+      description: 'Card backgrounds',
+    },
+    {
+      name: 'Text',
+      key: 'text',
+      value: currentPalette.text,
+      description: 'Primary text',
+    },
+    {
+      name: 'Border',
+      key: 'border',
+      value: currentPalette.border,
+      description: 'Element borders',
+    },
+    {
+      name: 'Muted',
+      key: 'muted',
+      value: currentPalette.muted,
+      description: 'Muted backgrounds',
+    },
+    {
+      name: 'Accent',
+      key: 'accent',
+      value: currentPalette.accent,
+      description: 'Accent highlights',
+    },
+    {
+      name: 'Success',
+      key: 'success',
+      value: currentPalette.success,
+      description: 'Success states',
+    },
+    {
+      name: 'Warning',
+      key: 'warning',
+      value: currentPalette.warning,
+      description: 'Warning states',
+    },
+    {
+      name: 'Error',
+      key: 'error',
+      value: currentPalette.error,
+      description: 'Error states',
+    },
   ]
-  
+
   const handleColorChange = (colorKey: string, newValue: string) => {
     const updatedTheme = { ...theme }
     if (activeMode === 'light') {
-      updatedTheme.lightMode.palette[colorKey as keyof typeof currentPalette] = newValue
+      updatedTheme.lightMode.palette[colorKey as keyof typeof currentPalette] =
+        newValue
     } else {
-      updatedTheme.darkMode.palette[colorKey as keyof typeof currentPalette] = newValue
+      updatedTheme.darkMode.palette[colorKey as keyof typeof currentPalette] =
+        newValue
     }
     onThemeChange(updatedTheme)
   }
-  
+
   const copyColorToClipboard = async (color: string, _colorName: string) => {
     try {
       await navigator.clipboard.writeText(color)
@@ -75,17 +133,30 @@ export function AdvancedPaletteSwitcher({
       console.error('Failed to copy color:', err)
     }
   }
-  
+
   const generateRandomPalette = () => {
     const colors = [
-      '#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16',
-      '#22c55e', '#10b981', '#14b8a6', '#06b6d4', '#0ea5e9',
-      '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#d946ef',
-      '#ec4899', '#f43f5e'
+      '#ef4444',
+      '#f97316',
+      '#f59e0b',
+      '#eab308',
+      '#84cc16',
+      '#22c55e',
+      '#10b981',
+      '#14b8a6',
+      '#06b6d4',
+      '#0ea5e9',
+      '#3b82f6',
+      '#6366f1',
+      '#8b5cf6',
+      '#a855f7',
+      '#d946ef',
+      '#ec4899',
+      '#f43f5e',
     ]
-    
+
     const randomColor = () => colors[Math.floor(Math.random() * colors.length)]
-    
+
     const newPalette = {
       primary: randomColor(),
       secondary: randomColor(),
@@ -99,7 +170,7 @@ export function AdvancedPaletteSwitcher({
       warning: '#f59e0b',
       error: '#ef4444',
     }
-    
+
     const updatedTheme = { ...theme }
     if (activeMode === 'light') {
       updatedTheme.lightMode.palette = newPalette
@@ -108,7 +179,7 @@ export function AdvancedPaletteSwitcher({
     }
     onThemeChange(updatedTheme)
   }
-  
+
   const resetToDefaults = () => {
     const defaultPalette = {
       primary: '#000000',
@@ -123,7 +194,7 @@ export function AdvancedPaletteSwitcher({
       warning: '#f59e0b',
       error: '#ef4444',
     }
-    
+
     const updatedTheme = { ...theme }
     if (activeMode === 'light') {
       updatedTheme.lightMode.palette = defaultPalette
@@ -132,16 +203,18 @@ export function AdvancedPaletteSwitcher({
     }
     onThemeChange(updatedTheme)
   }
-  
+
   const exportPalette = () => {
     const paletteData = {
       name: theme.name,
       mode: activeMode,
       palette: currentPalette,
-      exportedAt: new Date().toISOString()
+      exportedAt: new Date().toISOString(),
     }
-    
-    const blob = new Blob([JSON.stringify(paletteData, null, 2)], { type: 'application/json' })
+
+    const blob = new Blob([JSON.stringify(paletteData, null, 2)], {
+      type: 'application/json',
+    })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
@@ -149,7 +222,7 @@ export function AdvancedPaletteSwitcher({
     a.click()
     URL.revokeObjectURL(url)
   }
-  
+
   return (
     <Card className={`w-full max-w-4xl mx-auto ${className}`}>
       <CardHeader>
@@ -174,9 +247,12 @@ export function AdvancedPaletteSwitcher({
           </div>
         </div>
       </CardHeader>
-      
+
       <CardContent>
-        <Tabs value={activeMode} onValueChange={(value) => setActiveMode(value as 'light' | 'dark')}>
+        <Tabs
+          value={activeMode}
+          onValueChange={value => setActiveMode(value as 'light' | 'dark')}
+        >
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="light" className="flex items-center gap-2">
               <Sun className="w-4 h-4" />
@@ -187,11 +263,11 @@ export function AdvancedPaletteSwitcher({
               Dark Mode
             </TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value={activeMode} className="space-y-6">
             {/* Color Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {paletteColors.map((color) => (
+              {paletteColors.map(color => (
                 <div key={color.key} className="space-y-2">
                   <Label className="text-sm font-medium flex items-center justify-between">
                     {color.name}
@@ -200,10 +276,12 @@ export function AdvancedPaletteSwitcher({
                     </Badge>
                   </Label>
                   <div className="flex gap-2">
-                    <div 
+                    <div
                       className="w-12 h-10 rounded-md border border-gray-300 cursor-pointer relative overflow-hidden"
                       style={{ backgroundColor: color.value }}
-                      onClick={() => copyColorToClipboard(color.value, color.name)}
+                      onClick={() =>
+                        copyColorToClipboard(color.value, color.name)
+                      }
                     >
                       {copiedColor === color.value && (
                         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -215,81 +293,103 @@ export function AdvancedPaletteSwitcher({
                       <Input
                         type="color"
                         value={color.value}
-                        onChange={(e) => handleColorChange(color.key, e.target.value)}
+                        onChange={e =>
+                          handleColorChange(color.key, e.target.value)
+                        }
                         className="w-full h-8"
                       />
                       <Input
                         type="text"
                         value={color.value}
-                        onChange={(e) => handleColorChange(color.key, e.target.value)}
+                        onChange={e =>
+                          handleColorChange(color.key, e.target.value)
+                        }
                         className="w-full h-8 text-xs font-mono"
                         placeholder="#000000"
                       />
                     </div>
                   </div>
-                  <p className="text-xs text-muted-foreground">{color.description}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {color.description}
+                  </p>
                 </div>
               ))}
             </div>
-            
+
             {/* Preview Section */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Preview</h3>
-              <div 
+              <div
                 className="p-6 rounded-lg border"
-                style={{ 
+                style={{
                   backgroundColor: currentPalette.background,
                   borderColor: currentPalette.border,
-                  color: currentPalette.text
+                  color: currentPalette.text,
                 }}
               >
                 <div className="space-y-4">
                   <div className="flex items-center gap-4">
-                    <div 
+                    <div
                       className="px-4 py-2 rounded-md font-medium"
-                      style={{ backgroundColor: currentPalette.primary, color: '#ffffff' }}
+                      style={{
+                        backgroundColor: currentPalette.primary,
+                        color: '#ffffff',
+                      }}
                     >
                       Primary Button
                     </div>
-                    <div 
+                    <div
                       className="px-4 py-2 rounded-md font-medium border"
-                      style={{ 
+                      style={{
                         backgroundColor: currentPalette.background,
                         borderColor: currentPalette.border,
-                        color: currentPalette.text
+                        color: currentPalette.text,
                       }}
                     >
                       Secondary Button
                     </div>
                   </div>
-                  
-                  <div 
+
+                  <div
                     className="p-4 rounded-md"
-                    style={{ 
+                    style={{
                       backgroundColor: currentPalette.card,
-                      borderColor: currentPalette.border
+                      borderColor: currentPalette.border,
                     }}
                   >
                     <h4 className="font-semibold mb-2">Card Component</h4>
-                    <p className="text-sm" style={{ color: currentPalette.text }}>
-                      This is how your card components will look with the selected palette.
+                    <p
+                      className="text-sm"
+                      style={{ color: currentPalette.text }}
+                    >
+                      This is how your card components will look with the
+                      selected palette.
                     </p>
                     <div className="flex gap-2 mt-3">
-                      <span 
+                      <span
                         className="px-2 py-1 rounded text-xs"
-                        style={{ backgroundColor: currentPalette.success, color: '#ffffff' }}
+                        style={{
+                          backgroundColor: currentPalette.success,
+                          color: '#ffffff',
+                        }}
                       >
                         Success
                       </span>
-                      <span 
+                      <span
                         className="px-2 py-1 rounded text-xs"
-                        style={{ backgroundColor: currentPalette.warning, color: '#ffffff' }}
+                        style={{
+                          backgroundColor: currentPalette.warning,
+                          color: '#ffffff',
+                        }}
                       >
                         Warning
                       </span>
-                      <span 
+                      <span
                         className="px-2 py-1 rounded text-xs"
-                        style={{ backgroundColor: currentPalette.error, color: '#ffffff' }}
+                        style={{
+                          backgroundColor: currentPalette.error,
+                          color: '#ffffff',
+                        }}
                       >
                         Error
                       </span>
@@ -298,14 +398,22 @@ export function AdvancedPaletteSwitcher({
                 </div>
               </div>
             </div>
-            
+
             {/* Accessibility Check */}
             <div className="space-y-2">
               <h3 className="text-lg font-semibold">Accessibility Notes</h3>
               <div className="text-sm text-muted-foreground space-y-1">
-                <p>• Ensure sufficient contrast between text and background colors</p>
-                <p>• Test your color combinations for color blindness accessibility</p>
-                <p>• Consider using tools like WebAIM&apos;s Contrast Checker</p>
+                <p>
+                  • Ensure sufficient contrast between text and background
+                  colors
+                </p>
+                <p>
+                  • Test your color combinations for color blindness
+                  accessibility
+                </p>
+                <p>
+                  • Consider using tools like WebAIM&apos;s Contrast Checker
+                </p>
               </div>
             </div>
           </TabsContent>

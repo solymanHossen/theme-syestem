@@ -2,20 +2,20 @@
 
 @layer base {
   :root {
-    /* Light mode theme variables - using RGB values for better performance */
-    --theme-primary: 26 32 44;
-    --theme-secondary: 74 85 104;
+    /* Theme system variables (RGB values for better performance) */
+    --theme-primary: 59 130 246;
+    --theme-secondary: 107 114 128;
     --theme-background: 255 255 255;
-    --theme-card: 247 250 252;
-    --theme-border: 226 232 240;
-    --theme-text: 45 55 72;
-    --theme-muted: 113 128 150;
-    --theme-accent: 49 130 206;
-    --theme-success: 56 161 105;
-    --theme-warning: 214 158 46;
-    --theme-error: 229 62 62;
+    --theme-card: 249 250 251;
+    --theme-border: 229 231 235;
+    --theme-text: 17 24 39;
+    --theme-muted: 107 114 128;
+    --theme-accent: 99 102 241;
+    --theme-success: 34 197 94;
+    --theme-warning: 245 158 11;
+    --theme-error: 239 68 68;
 
-    /* shadcn/ui variables */
+    /* shadcn/ui variables (HSL values) */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -36,10 +36,30 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
+
+    /* Chart colors */
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
   }
 
   .dark {
-    /* Dark mode overrides for shadcn/ui */
+    /* Dark theme variables */
+    --theme-primary: 59 130 246;
+    --theme-secondary: 156 163 175;
+    --theme-background: 17 24 39;
+    --theme-card: 31 41 55;
+    --theme-border: 55 65 81;
+    --theme-text: 248 250 252;
+    --theme-muted: 156 163 175;
+    --theme-accent: 99 102 241;
+    --theme-success: 34 197 94;
+    --theme-warning: 245 158 11;
+    --theme-error: 239 68 68;
+
+    /* shadcn/ui dark mode */
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
@@ -59,197 +79,56 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
-}
 
-@layer base {
+  /* Color theme variants */
+  [data-theme="blue"] {
+    --theme-primary: 59 130 246;
+    --theme-accent: 99 102 241;
+  }
+
+  [data-theme="green"] {
+    --theme-primary: 34 197 94;
+    --theme-accent: 22 163 74;
+  }
+
+  [data-theme="purple"] {
+    --theme-primary: 147 51 234;
+    --theme-accent: 124 58 237;
+  }
+
+  [data-theme="pink"] {
+    --theme-primary: 236 72 153;
+    --theme-accent: 219 39 119;
+  }
+
+  [data-theme="orange"] {
+    --theme-primary: 249 115 22;
+    --theme-accent: 234 88 12;
+  }
+
   * {
     border-color: hsl(var(--border));
   }
+
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-}
-
-@layer components {
-  /* Theme-aware components */
-  .themed-background {
-    background-color: var(--theme-background);
-    transition: background-color 0.3s ease;
-  }
-
-  .themed-card {
-    background-color: var(--theme-card);
-    border-color: var(--theme-border);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-  }
-
-  .themed-text {
-    color: var(--theme-text);
-    transition: color 0.3s ease;
-  }
-
-  .themed-border {
-    border-color: var(--theme-border);
-    transition: border-color 0.3s ease;
-  }
-
-  .themed-button {
-    transition: all 0.2s ease;
-    border-radius: 0.5rem;
-  }
-
-  .themed-button:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-  }
-
-  /* Smooth transitions for theme switching */
-  * {
-    transition-property: background-color, border-color, color, fill, stroke;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 300ms;
-  }
-
-  /* Picture system utilities */
-  .picture-container {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .picture-loading {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--theme-card);
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .picture-error {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--theme-card);
-    color: var(--theme-muted);
-  }
-
-  .picture-zoom {
-    cursor: zoom-in;
-    transition: transform 0.3s ease;
-  }
-
-  .picture-zoom:hover {
-    transform: scale(1.05);
-  }
-
-  /* Image gallery styles */
-  .gallery-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  }
-
-  .gallery-masonry {
-    column-count: 1;
-    column-gap: 1rem;
-  }
-
-  @media (min-width: 768px) {
-    .gallery-masonry {
-      column-count: 2;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .gallery-masonry {
-      column-count: 3;
-    }
-  }
-
-  .gallery-item {
-    break-inside: avoid;
-    margin-bottom: 1rem;
-  }
-
-  /* Lightbox styles */
-  .lightbox-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    background-color: rgba(0, 0, 0, 0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .lightbox-content {
-    position: relative;
-    max-width: 90vw;
-    max-height: 90vh;
-    overflow: hidden;
-  }
-
-  .lightbox-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    transition: transform 0.2s ease;
-  }
-
-  /* Avatar enhancements */
-  .avatar-ring {
-    box-shadow: 0 0 0 2px var(--theme-background), 0 0 0 4px var(--theme-primary);
-  }
-
-  .avatar-status {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    border: 2px solid var(--theme-background);
-    border-radius: 50%;
-  }
-
-  /* Responsive image utilities */
-  .responsive-image {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .aspect-square {
-    aspect-ratio: 1 / 1;
-  }
-
-  .aspect-video {
-    aspect-ratio: 16 / 9;
-  }
-
-  .aspect-photo {
-    aspect-ratio: 4 / 3;
-  }
-
-  .aspect-wide {
-    aspect-ratio: 21 / 9;
-  }
-
-  /* Performance optimizations */
-  .will-change-transform {
-    will-change: transform;
-  }
-
-  .gpu-accelerated {
-    transform: translateZ(0);
   }
 }
 
 @layer utilities {
+  .transition-theme {
+    transition-property: color, background-color, border-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+  }
+
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -258,3 +137,4 @@
     overflow: hidden;
   }
 }
+

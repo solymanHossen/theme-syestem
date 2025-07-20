@@ -1,8 +1,8 @@
-"use client"
-import { ArrowRight, Mountain } from "lucide-react"
+'use client'
+import { ArrowRight, Mountain } from 'lucide-react'
 
-import { useTheme } from "@/components/theme-provider"
-import { Button } from "@/components/ui/button"
+import { useTheme } from '@/components/theme-provider'
+import { Button } from '@/components/ui/button'
 
 export function HeroSection() {
   const { currentTheme } = useTheme()
@@ -15,15 +15,25 @@ export function HeroSection() {
       <div className="container mx-auto text-center">
         <div className="max-w-4xl mx-auto space-y-6">
           <div className="flex justify-center mb-6">
-            <Mountain className="w-16 h-16" style={{ color: currentTheme.palette.primary }} />
+            <Mountain
+              className="w-16 h-16"
+              style={{ color: currentTheme.palette.primary }}
+            />
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-bold themed-text" style={{ color: currentTheme.palette.text }}>
+          <h1
+            className="text-4xl md:text-6xl font-bold themed-text"
+            style={{ color: currentTheme.palette.text }}
+          >
             Adventure Awaits
           </h1>
 
-          <p className="text-xl md:text-2xl max-w-2xl mx-auto" style={{ color: currentTheme.palette.muted }}>
-            Discover premium outdoor gear and camping equipment for your next adventure
+          <p
+            className="text-xl md:text-2xl max-w-2xl mx-auto"
+            style={{ color: currentTheme.palette.muted }}
+          >
+            Discover premium outdoor gear and camping equipment for your next
+            adventure
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">

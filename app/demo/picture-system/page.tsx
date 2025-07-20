@@ -1,38 +1,38 @@
-"use client"
+'use client'
 
-import { Picture } from "@/components/ui/picture"
-import { ImageGallery } from "@/components/ui/image-gallery"
-import { Avatar } from "@/components/ui/avatar-enhanced"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { useTheme } from "@/components/theme-provider"
+import { useTheme } from '@/components/theme-provider'
+import { Avatar } from '@/components/ui/avatar-enhanced'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ImageGallery } from '@/components/ui/image-gallery'
+import { Picture } from '@/components/ui/picture'
 
 // Sample image data
 const sampleImages = [
   {
-    src: "/placeholder.svg?height=400&width=600",
-    alt: "Sample Image 1",
-    title: "Beautiful Landscape",
-    description: "A stunning view of mountains and valleys",
+    src: '/placeholder.svg?height=400&width=600',
+    alt: 'Sample Image 1',
+    title: 'Beautiful Landscape',
+    description: 'A stunning view of mountains and valleys',
   },
   {
-    src: "/placeholder.svg?height=600&width=400",
-    alt: "Sample Image 2",
-    title: "City Skyline",
-    description: "Modern architecture against the sky",
+    src: '/placeholder.svg?height=600&width=400',
+    alt: 'Sample Image 2',
+    title: 'City Skyline',
+    description: 'Modern architecture against the sky',
   },
   {
-    src: "/placeholder.svg?height=400&width=400",
-    alt: "Sample Image 3",
-    title: "Nature Close-up",
-    description: "Detailed view of natural elements",
+    src: '/placeholder.svg?height=400&width=400',
+    alt: 'Sample Image 3',
+    title: 'Nature Close-up',
+    description: 'Detailed view of natural elements',
   },
   {
-    src: "/placeholder.svg?height=300&width=400",
-    alt: "Sample Image 4",
-    title: "Abstract Art",
-    description: "Creative and colorful composition",
+    src: '/placeholder.svg?height=300&width=400',
+    alt: 'Sample Image 4',
+    title: 'Abstract Art',
+    description: 'Creative and colorful composition',
   },
 ]
 
@@ -40,19 +40,19 @@ export default function PictureSystemDemo() {
   const { currentTheme } = useTheme()
 
   return (
-    <div 
+    <div
       className="min-h-screen p-8 space-y-12"
       style={{ backgroundColor: currentTheme.palette.background }}
     >
       <div className="container mx-auto">
         <div className="text-center mb-12">
-          <h1 
+          <h1
             className="text-4xl font-bold mb-4"
             style={{ color: currentTheme.palette.text }}
           >
             Picture System Demo
           </h1>
-          <p 
+          <p
             className="text-lg max-w-2xl mx-auto"
             style={{ color: currentTheme.palette.muted }}
           >
@@ -62,7 +62,7 @@ export default function PictureSystemDemo() {
 
         {/* Picture Component Examples */}
         <section className="mb-16">
-          <h2 
+          <h2
             className="text-2xl font-semibold mb-8"
             style={{ color: currentTheme.palette.text }}
           >
@@ -130,7 +130,7 @@ export default function PictureSystemDemo() {
 
         {/* Image Gallery Examples */}
         <section className="mb-16">
-          <h2 
+          <h2
             className="text-2xl font-semibold mb-8"
             style={{ color: currentTheme.palette.text }}
           >
@@ -202,7 +202,7 @@ export default function PictureSystemDemo() {
 
         {/* Avatar Examples */}
         <section className="mb-16">
-          <h2 
+          <h2
             className="text-2xl font-semibold mb-8"
             style={{ color: currentTheme.palette.text }}
           >
@@ -331,7 +331,7 @@ export default function PictureSystemDemo() {
 
         {/* Feature Highlights */}
         <section className="mb-16">
-          <h2 
+          <h2
             className="text-2xl font-semibold mb-8"
             style={{ color: currentTheme.palette.text }}
           >
@@ -342,11 +342,18 @@ export default function PictureSystemDemo() {
             <Card style={{ backgroundColor: currentTheme.palette.card }}>
               <CardContent className="p-6">
                 <Badge className="mb-4">Performance</Badge>
-                <h3 className="font-semibold mb-2" style={{ color: currentTheme.palette.text }}>
+                <h3
+                  className="font-semibold mb-2"
+                  style={{ color: currentTheme.palette.text }}
+                >
                   Optimized Loading
                 </h3>
-                <p className="text-sm" style={{ color: currentTheme.palette.muted }}>
-                  Lazy loading, intersection observer, and progressive enhancement
+                <p
+                  className="text-sm"
+                  style={{ color: currentTheme.palette.muted }}
+                >
+                  Lazy loading, intersection observer, and progressive
+                  enhancement
                 </p>
               </CardContent>
             </Card>
@@ -354,10 +361,16 @@ export default function PictureSystemDemo() {
             <Card style={{ backgroundColor: currentTheme.palette.card }}>
               <CardContent className="p-6">
                 <Badge className="mb-4">Responsive</Badge>
-                <h3 className="font-semibold mb-2" style={{ color: currentTheme.palette.text }}>
+                <h3
+                  className="font-semibold mb-2"
+                  style={{ color: currentTheme.palette.text }}
+                >
                   Mobile First
                 </h3>
-                <p className="text-sm" style={{ color: currentTheme.palette.muted }}>
+                <p
+                  className="text-sm"
+                  style={{ color: currentTheme.palette.muted }}
+                >
                   Responsive design with proper aspect ratios and breakpoints
                 </p>
               </CardContent>
@@ -366,10 +379,16 @@ export default function PictureSystemDemo() {
             <Card style={{ backgroundColor: currentTheme.palette.card }}>
               <CardContent className="p-6">
                 <Badge className="mb-4">Accessible</Badge>
-                <h3 className="font-semibold mb-2" style={{ color: currentTheme.palette.text }}>
+                <h3
+                  className="font-semibold mb-2"
+                  style={{ color: currentTheme.palette.text }}
+                >
                   A11y Ready
                 </h3>
-                <p className="text-sm" style={{ color: currentTheme.palette.muted }}>
+                <p
+                  className="text-sm"
+                  style={{ color: currentTheme.palette.muted }}
+                >
                   Screen reader support, keyboard navigation, and semantic HTML
                 </p>
               </CardContent>
@@ -378,10 +397,16 @@ export default function PictureSystemDemo() {
             <Card style={{ backgroundColor: currentTheme.palette.card }}>
               <CardContent className="p-6">
                 <Badge className="mb-4">Themeable</Badge>
-                <h3 className="font-semibold mb-2" style={{ color: currentTheme.palette.text }}>
+                <h3
+                  className="font-semibold mb-2"
+                  style={{ color: currentTheme.palette.text }}
+                >
                   Theme Integration
                 </h3>
-                <p className="text-sm" style={{ color: currentTheme.palette.muted }}>
+                <p
+                  className="text-sm"
+                  style={{ color: currentTheme.palette.muted }}
+                >
                   Works seamlessly with your theme system and color palette
                 </p>
               </CardContent>
@@ -390,10 +415,16 @@ export default function PictureSystemDemo() {
             <Card style={{ backgroundColor: currentTheme.palette.card }}>
               <CardContent className="p-6">
                 <Badge className="mb-4">Interactive</Badge>
-                <h3 className="font-semibold mb-2" style={{ color: currentTheme.palette.text }}>
+                <h3
+                  className="font-semibold mb-2"
+                  style={{ color: currentTheme.palette.text }}
+                >
                   Rich Features
                 </h3>
-                <p className="text-sm" style={{ color: currentTheme.palette.muted }}>
+                <p
+                  className="text-sm"
+                  style={{ color: currentTheme.palette.muted }}
+                >
                   Zoom, lightbox, galleries, and interactive elements
                 </p>
               </CardContent>
@@ -402,10 +433,16 @@ export default function PictureSystemDemo() {
             <Card style={{ backgroundColor: currentTheme.palette.card }}>
               <CardContent className="p-6">
                 <Badge className="mb-4">Customizable</Badge>
-                <h3 className="font-semibold mb-2" style={{ color: currentTheme.palette.text }}>
+                <h3
+                  className="font-semibold mb-2"
+                  style={{ color: currentTheme.palette.text }}
+                >
                   Flexible API
                 </h3>
-                <p className="text-sm" style={{ color: currentTheme.palette.muted }}>
+                <p
+                  className="text-sm"
+                  style={{ color: currentTheme.palette.muted }}
+                >
                   Extensive props and customization options for any use case
                 </p>
               </CardContent>

@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server"
+import { NextResponse } from 'next/server'
 
-import { CustomTheme } from "@/lib/models/theme"
-import connectToDatabase from "@/lib/mongoose"
+import { CustomTheme } from '@/lib/models/theme'
+import connectToDatabase from '@/lib/mongoose'
 
 export async function POST() {
   try {
@@ -35,13 +35,11 @@ export async function POST() {
 
         if (customThemes.length > 0) {
           // Keep the most recent custom theme
-          themeToKeep = customThemes.sort((a, b) => 
-            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          themeToKeep = customThemes.sort(
+            (a, b) =>
+              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
           )[0]
-          themesToRemove = [
-            ...customThemes.slice(1),
-            ...predefinedThemes
-          ]
+          themesToRemove = [...customThemes.slice(1), ...predefinedThemes]
         } else {
           // Keep the first predefined theme
           themeToKeep = predefinedThemes[0]
@@ -62,21 +60,23 @@ export async function POST() {
             id: themeToKeep.id,
             name: themeToKeep.name,
             isCustom: themeToKeep.isCustom,
-            createdAt: themeToKeep.createdAt
-          }
+            createdAt: themeToKeep.createdAt,
+          },
         })
       }
     }
 
     return NextResponse.json({
-      message: "Theme cleanup completed",
+      message: 'Theme cleanup completed',
       totalDuplicatesRemoved: removedCount,
       processedThemes: cleanupResults.length,
-      details: cleanupResults
+      details: cleanupResults,
     })
-
   } catch (error) {
-    console.error("Error cleaning up themes:", error)
-    return NextResponse.json({ error: "Failed to cleanup themes" }, { status: 500 })
+    console.error('Error cleaning up themes:', error)
+    return NextResponse.json(
+      { error: 'Failed to cleanup themes' },
+      { status: 500 }
+    )
   }
 }

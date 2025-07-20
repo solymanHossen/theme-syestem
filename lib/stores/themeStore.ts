@@ -1,11 +1,15 @@
-import { create } from "zustand"
-import { persist } from "zustand/middleware"
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
-import { type CustomTheme, type ThemeMode, themes as predefinedThemes } from "../themeData"
+import {
+  type CustomTheme,
+  type ThemeMode,
+  themes as predefinedThemes,
+} from '../themeData'
 
 interface ThemeStore {
   activeThemeId: string
-  mode: "light" | "dark"
+  mode: 'light' | 'dark'
   previewTheme: CustomTheme | null
   themes: CustomTheme[]
   isLoading: boolean
@@ -14,13 +18,13 @@ interface ThemeStore {
 
   // Actions
   setActiveTheme: (themeId: string) => Promise<void>
-  setMode: (mode: "light" | "dark") => void
+  setMode: (mode: 'light' | 'dark') => void
   toggleMode: () => void
   setPreviewTheme: (theme: CustomTheme | null) => void
   clearPreview: () => void
   loadThemeSettings: () => Promise<void>
   loadAllThemes: () => Promise<void>
-  saveThemeSettings: (themeId: string, mode: "light" | "dark") => Promise<void>
+  saveThemeSettings: (themeId: string, mode: 'light' | 'dark') => Promise<void>
   saveCustomTheme: (theme: CustomTheme) => Promise<CustomTheme>
   updateCustomTheme: (theme: CustomTheme) => Promise<CustomTheme>
   deleteCustomTheme: (themeId: string) => Promise<void>
@@ -36,8 +40,8 @@ interface ThemeStore {
 export const useThemeStore = create<ThemeStore>()(
   persist(
     (set, get) => ({
-      activeThemeId: "minimal-white",
-      mode: "light",
+      activeThemeId: 'minimal-white',
+      mode: 'light',
       previewTheme: null,
       themes: predefinedThemes,
       isLoading: false,
@@ -46,48 +50,68 @@ export const useThemeStore = create<ThemeStore>()(
 
       initialize: async () => {
         if (get().isInitialized) return
-        
+
         set({ isLoading: true, error: null })
-        
+
         try {
           // Load all themes first
           await get().loadAllThemes()
-          
+
           // Then load theme settings from the API
-          const response = await fetch("/api/v1/themes/settings")
-          
+          const response = await fetch('/api/v1/themes/settings')
+
           if (response.ok) {
             const data = await response.json()
-            const themeId = data.themeId ?? "minimal-white"
-            const mode = data.mode === "dark" ? "dark" : "light"
+            const themeId = data.themeId ?? 'minimal-white'
+            const mode = data.mode === 'dark' ? 'dark' : 'light'
             set({ activeThemeId: themeId, mode, isInitialized: true })
           } else {
             // If API fails, try to load from localStorage as fallback
-            const storedSettings = localStorage.getItem("theme-settings")
+            const storedSettings = localStorage.getItem('theme-settings')
             if (storedSettings) {
               const { themeId, mode } = JSON.parse(storedSettings)
-              set({ activeThemeId: themeId ?? "minimal-white", mode: mode || "light", isInitialized: true })
+              set({
+                activeThemeId: themeId ?? 'minimal-white',
+                mode: mode || 'light',
+                isInitialized: true,
+              })
             } else {
-              set({ activeThemeId: "minimal-white", mode: "light", isInitialized: true })
+              set({
+                activeThemeId: 'minimal-white',
+                mode: 'light',
+                isInitialized: true,
+              })
             }
           }
         } catch (error) {
-          console.error("Failed to initialize theme:", error)
-          
+          console.error('Failed to initialize theme:', error)
+
           // Fallback to localStorage
           try {
-            const storedSettings = localStorage.getItem("theme-settings")
+            const storedSettings = localStorage.getItem('theme-settings')
             if (storedSettings) {
               const { themeId, mode } = JSON.parse(storedSettings)
-              set({ activeThemeId: themeId ?? "minimal-white", mode: mode || "light", isInitialized: true })
+              set({
+                activeThemeId: themeId ?? 'minimal-white',
+                mode: mode || 'light',
+                isInitialized: true,
+              })
             } else {
-              set({ activeThemeId: "minimal-white", mode: "light", isInitialized: true })
+              set({
+                activeThemeId: 'minimal-white',
+                mode: 'light',
+                isInitialized: true,
+              })
             }
           } catch {
-            set({ activeThemeId: "minimal-white", mode: "light", isInitialized: true })
+            set({
+              activeThemeId: 'minimal-white',
+              mode: 'light',
+              isInitialized: true,
+            })
           }
-          
-          set({ error: "Failed to initialize theme settings" })
+
+          set({ error: 'Failed to initialize theme settings' })
         } finally {
           set({ isLoading: false })
         }
@@ -95,29 +119,29 @@ export const useThemeStore = create<ThemeStore>()(
 
       setActiveTheme: async (themeId: string) => {
         set({ activeThemeId: themeId, previewTheme: null })
-        
+
         // Update active theme in database
         try {
-          await fetch("/api/v1/themes/active", {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
+          await fetch('/api/v1/themes/active', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ themeId }),
           })
         } catch (error) {
-          console.error("Failed to update active theme:", error)
+          console.error('Failed to update active theme:', error)
         }
-        
+
         await get().saveThemeSettings(themeId, get().mode)
       },
 
-      setMode: (mode: "light" | "dark") => {
+      setMode: (mode: 'light' | 'dark') => {
         set({ mode })
         get().saveThemeSettings(get().activeThemeId, mode)
       },
 
       toggleMode: () => {
         const currentMode = get().mode
-        const newMode = currentMode === "light" ? "dark" : "light"
+        const newMode = currentMode === 'light' ? 'dark' : 'light'
         get().setMode(newMode)
       },
 
@@ -133,38 +157,46 @@ export const useThemeStore = create<ThemeStore>()(
         set({ isLoading: true, error: null })
 
         try {
-          const response = await fetch("/api/v1/themes")
+          const response = await fetch('/api/v1/themes')
           if (response.ok) {
             const data = await response.json()
             const themes = data.themes ?? predefinedThemes
-            
+
             // Deduplicate themes by ID to prevent React key errors
-            const uniqueThemes = themes.reduce((acc: CustomTheme[], theme: CustomTheme) => {
-              const existingTheme = acc.find(t => t.id === theme.id)
-              if (!existingTheme) {
-                acc.push(theme)
-              } else {
-                // Keep the most recent version (custom themes override predefined)
-                const themeUpdatedAt = (theme as any).updatedAt
-                const existingUpdatedAt = (existingTheme as any).updatedAt
-                
-                if (theme.isCustom || (themeUpdatedAt && existingUpdatedAt && themeUpdatedAt > existingUpdatedAt)) {
-                  const index = acc.findIndex(t => t.id === theme.id)
-                  acc[index] = theme
+            const uniqueThemes = themes.reduce(
+              (acc: CustomTheme[], theme: CustomTheme) => {
+                const existingTheme = acc.find(t => t.id === theme.id)
+                if (!existingTheme) {
+                  acc.push(theme)
+                } else {
+                  // Keep the most recent version (custom themes override predefined)
+                  const themeUpdatedAt = (theme as any).updatedAt
+                  const existingUpdatedAt = (existingTheme as any).updatedAt
+
+                  if (
+                    theme.isCustom ||
+                    (themeUpdatedAt &&
+                      existingUpdatedAt &&
+                      themeUpdatedAt > existingUpdatedAt)
+                  ) {
+                    const index = acc.findIndex(t => t.id === theme.id)
+                    acc[index] = theme
+                  }
                 }
-              }
-              return acc
-            }, [])
-            
+                return acc
+              },
+              []
+            )
+
             set({ themes: uniqueThemes })
           } else {
-            throw new Error("Failed to fetch themes")
+            throw new Error('Failed to fetch themes')
           }
         } catch (error) {
-          console.error("Failed to load themes:", error)
-          set({ 
-            error: "Failed to load themes",
-            themes: predefinedThemes 
+          console.error('Failed to load themes:', error)
+          set({
+            error: 'Failed to load themes',
+            themes: predefinedThemes,
           })
         } finally {
           set({ isLoading: false })
@@ -176,25 +208,28 @@ export const useThemeStore = create<ThemeStore>()(
         await get().initialize()
       },
 
-      saveThemeSettings: async (themeId: string, mode: "light" | "dark") => {
+      saveThemeSettings: async (themeId: string, mode: 'light' | 'dark') => {
         try {
-          const response = await fetch("/api/v1/themes/settings", {
-            method: "PUT",
+          const response = await fetch('/api/v1/themes/settings', {
+            method: 'PUT',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({ themeId, mode }),
           })
 
           if (!response.ok) {
-            throw new Error("Failed to save theme settings")
+            throw new Error('Failed to save theme settings')
           }
         } catch (error) {
-          console.error("Failed to save theme settings:", error)
-          set({ error: "Failed to save theme settings" })
+          console.error('Failed to save theme settings:', error)
+          set({ error: 'Failed to save theme settings' })
 
           // Fallback: save to localStorage if API fails
-          localStorage.setItem("theme-settings", JSON.stringify({ themeId, mode }))
+          localStorage.setItem(
+            'theme-settings',
+            JSON.stringify({ themeId, mode })
+          )
         }
       },
 
@@ -203,9 +238,9 @@ export const useThemeStore = create<ThemeStore>()(
         const timestamp = Date.now()
         const random = Math.random().toString(36).substring(2, 8)
         const cleanName = baseName.toLowerCase().replace(/[^a-z0-9]/g, '-')
-        
+
         let themeId = `custom-${cleanName}-${timestamp}-${random}`
-        
+
         // Ensure uniqueness by checking existing themes
         const existingThemes = get().themes
         let counter = 1
@@ -213,25 +248,25 @@ export const useThemeStore = create<ThemeStore>()(
           themeId = `custom-${cleanName}-${timestamp}-${random}-${counter}`
           counter++
         }
-        
+
         return themeId
       },
 
       saveCustomTheme: async (theme: CustomTheme) => {
         set({ isLoading: true, error: null })
-        
+
         try {
-          const response = await fetch("/api/v1/themes/custom", {
-            method: "POST",
+          const response = await fetch('/api/v1/themes/custom', {
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify(theme),
           })
 
           if (!response.ok) {
             const errorData = await response.json()
-            throw new Error(errorData.error ?? "Failed to save custom theme")
+            throw new Error(errorData.error ?? 'Failed to save custom theme')
           }
 
           const data = await response.json()
@@ -239,15 +274,18 @@ export const useThemeStore = create<ThemeStore>()(
 
           // Update themes list
           const currentThemes = get().themes
-          set({ 
+          set({
             themes: [...currentThemes, savedTheme],
-            error: null
+            error: null,
           })
 
           return savedTheme
         } catch (error) {
-          console.error("Failed to save custom theme:", error)
-          const errorMessage = error instanceof Error ? error.message : "Failed to save custom theme"
+          console.error('Failed to save custom theme:', error)
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : 'Failed to save custom theme'
           set({ error: errorMessage })
           throw error
         } finally {
@@ -257,19 +295,19 @@ export const useThemeStore = create<ThemeStore>()(
 
       updateCustomTheme: async (theme: CustomTheme) => {
         set({ isLoading: true, error: null })
-        
+
         try {
           const response = await fetch(`/api/v1/themes/${theme.id}`, {
-            method: "PUT",
+            method: 'PUT',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify(theme),
           })
 
           if (!response.ok) {
             const errorData = await response.json()
-            throw new Error(errorData.error ?? "Failed to update custom theme")
+            throw new Error(errorData.error ?? 'Failed to update custom theme')
           }
 
           const data = await response.json()
@@ -277,19 +315,22 @@ export const useThemeStore = create<ThemeStore>()(
 
           // Update themes list
           const currentThemes = get().themes
-          const updatedThemes = currentThemes.map(t => 
+          const updatedThemes = currentThemes.map(t =>
             t.id === theme.id ? updatedTheme : t
           )
-          
-          set({ 
+
+          set({
             themes: updatedThemes,
-            error: null
+            error: null,
           })
 
           return updatedTheme
         } catch (error) {
-          console.error("Failed to update custom theme:", error)
-          const errorMessage = error instanceof Error ? error.message : "Failed to update custom theme"
+          console.error('Failed to update custom theme:', error)
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : 'Failed to update custom theme'
           set({ error: errorMessage })
           throw error
         } finally {
@@ -299,33 +340,36 @@ export const useThemeStore = create<ThemeStore>()(
 
       deleteCustomTheme: async (themeId: string) => {
         set({ isLoading: true, error: null })
-        
+
         try {
           const response = await fetch(`/api/v1/themes/${themeId}`, {
-            method: "DELETE",
+            method: 'DELETE',
           })
 
           if (!response.ok) {
             const errorData = await response.json()
-            throw new Error(errorData.error ?? "Failed to delete custom theme")
+            throw new Error(errorData.error ?? 'Failed to delete custom theme')
           }
 
           // Update themes list
           const currentThemes = get().themes
           const filteredThemes = currentThemes.filter(t => t.id !== themeId)
-          
-          set({ 
+
+          set({
             themes: filteredThemes,
-            error: null
+            error: null,
           })
 
           // If the deleted theme was active, switch to default
           if (get().activeThemeId === themeId) {
-            await get().setActiveTheme("minimal-white")
+            await get().setActiveTheme('minimal-white')
           }
         } catch (error) {
-          console.error("Failed to delete custom theme:", error)
-          const errorMessage = error instanceof Error ? error.message : "Failed to delete custom theme"
+          console.error('Failed to delete custom theme:', error)
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : 'Failed to delete custom theme'
           set({ error: errorMessage })
           throw error
         } finally {
@@ -338,34 +382,37 @@ export const useThemeStore = create<ThemeStore>()(
         if (state.previewTheme) {
           return state.previewTheme
         }
-        return state.themes.find((theme) => theme.id === state.activeThemeId) || state.themes[0]
+        return (
+          state.themes.find(theme => theme.id === state.activeThemeId) ||
+          state.themes[0]
+        )
       },
 
       getCurrentThemeMode: () => {
         const state = get()
         const theme = state.getCurrentTheme()
-        return theme[(`${state.mode  }Mode`) as keyof CustomTheme] as ThemeMode
+        return theme[`${state.mode}Mode` as keyof CustomTheme] as ThemeMode
       },
 
       getThemeById: (id: string) => {
         const state = get()
-        return state.themes.find((theme) => theme.id === id)
+        return state.themes.find(theme => theme.id === id)
       },
     }),
     {
-      name: "theme-store",
-      partialize: (state) => ({
+      name: 'theme-store',
+      partialize: state => ({
         activeThemeId: state.activeThemeId,
         mode: state.mode,
         isInitialized: false, // Always start as not initialized to force API fetch
       }),
       // Trigger initialization after hydration
-      onRehydrateStorage: () => (state) => {
+      onRehydrateStorage: () => state => {
         if (state) {
           state.isInitialized = false
           // Don't auto-initialize here, let the component handle it
         }
       },
-    },
-  ),
+    }
+  )
 )

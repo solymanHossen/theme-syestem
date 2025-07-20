@@ -1,14 +1,15 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import * as AvatarPrimitive from "@radix-ui/react-avatar"
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
+import * as AvatarPrimitive from '@radix-ui/react-avatar'
+import * as React from 'react'
 
-export interface AvatarProps extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> {
+export interface AvatarProps
+  extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> {
   /** Avatar size */
-  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl"
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
   /** Avatar shape */
-  shape?: "circle" | "square"
+  shape?: 'circle' | 'square'
   /** Image source */
   src?: string
   /** Alt text for the image */
@@ -18,7 +19,7 @@ export interface AvatarProps extends React.ComponentPropsWithoutRef<typeof Avata
   /** Show online status indicator */
   showStatus?: boolean
   /** Online status */
-  status?: "online" | "offline" | "away" | "busy"
+  status?: 'online' | 'offline' | 'away' | 'busy'
   /** Custom status color */
   statusColor?: string
   /** Loading state */
@@ -58,20 +59,20 @@ const Avatar = React.forwardRef<
   (
     {
       className,
-      size = "md",
-      shape = "circle",
+      size = 'md',
+      shape = 'circle',
       src,
       alt,
       fallback,
       showStatus = false,
-      status = "offline",
+      status = 'offline',
       statusColor,
       loading = false,
       LoadingComponent,
       quality = 75,
-      placeholder = "/placeholder-user.jpg",
+      placeholder = '/placeholder-user.jpg',
       borderWidth = 0,
-      borderColor = "transparent",
+      borderColor = 'transparent',
       ringColor,
       showRing = false,
       ringWidth = 2,
@@ -89,42 +90,42 @@ const Avatar = React.forwardRef<
 
     // Size classes
     const sizeClasses = {
-      xs: "h-6 w-6 text-xs",
-      sm: "h-8 w-8 text-sm",
-      md: "h-10 w-10 text-base",
-      lg: "h-12 w-12 text-lg",
-      xl: "h-16 w-16 text-xl",
-      "2xl": "h-20 w-20 text-2xl",
+      xs: 'h-6 w-6 text-xs',
+      sm: 'h-8 w-8 text-sm',
+      md: 'h-10 w-10 text-base',
+      lg: 'h-12 w-12 text-lg',
+      xl: 'h-16 w-16 text-xl',
+      '2xl': 'h-20 w-20 text-2xl',
     }
 
     // Shape classes
     const shapeClasses = {
-      circle: "rounded-full",
-      square: "rounded-lg",
+      circle: 'rounded-full',
+      square: 'rounded-lg',
     }
 
     // Status indicator size classes
     const statusSizeClasses = {
-      xs: "h-1.5 w-1.5",
-      sm: "h-2 w-2",
-      md: "h-2.5 w-2.5",
-      lg: "h-3 w-3",
-      xl: "h-3.5 w-3.5",
-      "2xl": "h-4 w-4",
+      xs: 'h-1.5 w-1.5',
+      sm: 'h-2 w-2',
+      md: 'h-2.5 w-2.5',
+      lg: 'h-3 w-3',
+      xl: 'h-3.5 w-3.5',
+      '2xl': 'h-4 w-4',
     }
 
     // Status colors
     const statusColors = {
-      online: "bg-green-500",
-      offline: "bg-gray-400",
-      away: "bg-yellow-500",
-      busy: "bg-red-500",
+      online: 'bg-green-500',
+      offline: 'bg-gray-400',
+      away: 'bg-yellow-500',
+      busy: 'bg-red-500',
     }
 
     // Ring classes
     const ringClasses = showRing
       ? `ring-${ringWidth} ring-offset-2 ring-offset-background`
-      : ""
+      : ''
 
     // Handle image load
     const handleImageLoad = () => {
@@ -146,9 +147,9 @@ const Avatar = React.forwardRef<
     // Generate initials from name
     const generateInitials = (name: string) => {
       return name
-        .split(" ")
-        .map((word) => word.charAt(0))
-        .join("")
+        .split(' ')
+        .map(word => word.charAt(0))
+        .join('')
         .toUpperCase()
         .slice(0, 2)
     }
@@ -158,7 +159,7 @@ const Avatar = React.forwardRef<
       if (fallback) {
         return fallback.length > 2 ? generateInitials(fallback) : fallback
       }
-      return alt ? generateInitials(alt) : "?"
+      return alt ? generateInitials(alt) : '?'
     }
 
     return (
@@ -166,13 +167,14 @@ const Avatar = React.forwardRef<
         <AvatarPrimitive.Root
           ref={ref}
           className={cn(
-            "relative flex shrink-0 overflow-hidden",
+            'relative flex shrink-0 overflow-hidden',
             sizeClasses[size],
             shapeClasses[shape],
             ringClasses,
             ringColor && `ring-${ringColor}`,
-            enableHover && "cursor-pointer transition-transform hover:scale-105",
-            onClick && "cursor-pointer",
+            enableHover &&
+              'cursor-pointer transition-transform hover:scale-105',
+            onClick && 'cursor-pointer',
             className
           )}
           style={{
@@ -185,7 +187,11 @@ const Avatar = React.forwardRef<
           {/* Loading state */}
           {loading && (
             <div className="absolute inset-0 z-10">
-              {LoadingComponent ? <LoadingComponent /> : <DefaultLoadingComponent />}
+              {LoadingComponent ? (
+                <LoadingComponent />
+              ) : (
+                <DefaultLoadingComponent />
+              )}
             </div>
           )}
 
@@ -195,9 +201,9 @@ const Avatar = React.forwardRef<
               src={src}
               alt={alt}
               className={cn(
-                "aspect-square h-full w-full object-cover",
-                isLoading && "opacity-0",
-                !isLoading && "opacity-100",
+                'aspect-square h-full w-full object-cover',
+                isLoading && 'opacity-0',
+                !isLoading && 'opacity-100',
                 imageClassName
               )}
               onLoad={handleImageLoad}
@@ -208,7 +214,7 @@ const Avatar = React.forwardRef<
           {/* Fallback */}
           <AvatarPrimitive.Fallback
             className={cn(
-              "flex h-full w-full items-center justify-center bg-muted font-medium text-muted-foreground",
+              'flex h-full w-full items-center justify-center bg-muted font-medium text-muted-foreground',
               shapeClasses[shape],
               fallbackClassName
             )}
@@ -229,7 +235,7 @@ const Avatar = React.forwardRef<
         {showStatus && (
           <div
             className={cn(
-              "absolute bottom-0 right-0 rounded-full border-2 border-background",
+              'absolute bottom-0 right-0 rounded-full border-2 border-background',
               statusSizeClasses[size],
               statusColors[status]
             )}
@@ -243,6 +249,6 @@ const Avatar = React.forwardRef<
   }
 )
 
-Avatar.displayName = "Avatar"
+Avatar.displayName = 'Avatar'
 
 export { Avatar }

@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
-import { CustomTheme, ActiveTheme, ThemeSettings } from '@/lib/models/theme'
+import { ActiveTheme, CustomTheme, ThemeSettings } from '@/lib/models/theme'
 import connectToDatabase from '@/lib/mongoose'
 
 // Schema validation for theme actions
@@ -11,7 +11,14 @@ const ThemeSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
   description: z.string().min(1),
-  category: z.enum(['outdoor', 'modern', 'classic', 'vibrant', 'nature', 'minimal']),
+  category: z.enum([
+    'outdoor',
+    'modern',
+    'classic',
+    'vibrant',
+    'nature',
+    'minimal',
+  ]),
   isCustom: z.boolean().default(true),
   lightMode: z.object({
     id: z.literal('light'),
@@ -64,14 +71,14 @@ export async function saveCustomThemeAction(
   try {
     const rawData = Object.fromEntries(formData.entries())
     const themeData = JSON.parse(rawData.themeData as string)
-    
+
     const validatedTheme = ThemeSchema.parse(themeData)
-    
+
     await connectToDatabase()
-    
+
     // Check if theme exists
     const existingTheme = await CustomTheme.findOne({ id: validatedTheme.id })
-    
+
     if (existingTheme?.isCustom) {
       // Update existing custom theme
       await CustomTheme.findOneAndUpdate(
@@ -85,16 +92,16 @@ export async function saveCustomThemeAction(
     } else {
       throw new Error('Cannot modify predefined theme')
     }
-    
+
     revalidatePath('/admin/themes')
     revalidatePath('/')
-    
+
     return { success: true, message: 'Theme saved successfully' }
   } catch (error) {
     console.error('Theme save error:', error)
-    return { 
-      success: false, 
-      message: error instanceof Error ? error.message : 'Failed to save theme' 
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to save theme',
     }
   }
 }
@@ -107,38 +114,39 @@ export async function setActiveThemeAction(
   try {
     const themeId = formData.get('themeId') as string
     const mode = formData.get('mode') as string
-    
+
     const validatedSettings = ThemeSettingsSchema.parse({ themeId, mode })
-    
+
     await connectToDatabase()
-    
+
     // Update active theme
     await ActiveTheme.findOneAndUpdate(
       {},
       { themeId: validatedSettings.themeId, updatedAt: new Date() },
       { upsert: true, new: true }
     )
-    
+
     // Update theme settings
     await ThemeSettings.findOneAndUpdate(
       {},
-      { 
-        themeId: validatedSettings.themeId, 
+      {
+        themeId: validatedSettings.themeId,
         mode: validatedSettings.mode,
-        updatedAt: new Date() 
+        updatedAt: new Date(),
       },
       { upsert: true, new: true }
     )
-    
+
     revalidatePath('/')
     revalidatePath('/admin')
-    
+
     return { success: true, message: 'Theme activated successfully' }
   } catch (error) {
     console.error('Theme activation error:', error)
-    return { 
-      success: false, 
-      message: error instanceof Error ? error.message : 'Failed to activate theme' 
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : 'Failed to activate theme',
     }
   }
 }
@@ -150,22 +158,24 @@ export async function deleteCustomThemeAction(
 ) {
   try {
     const themeId = formData.get('themeId') as string
-    
+
     if (!themeId) {
       throw new Error('Theme ID is required')
     }
-    
+
     await connectToDatabase()
-    
-    const deletedTheme = await CustomTheme.findOneAndDelete({ 
-      id: themeId, 
-      isCustom: true 
+
+    const deletedTheme = await CustomTheme.findOneAndDelete({
+      id: themeId,
+      isCustom: true,
     })
-    
+
     if (!deletedTheme) {
-      throw new Error('Custom theme not found or cannot delete predefined theme')
+      throw new Error(
+        'Custom theme not found or cannot delete predefined theme'
+      )
     }
-    
+
     // If deleted theme was active, switch to default
     const activeTheme = await ActiveTheme.findOne()
     if (activeTheme?.themeId === themeId) {
@@ -174,23 +184,24 @@ export async function deleteCustomThemeAction(
         { themeId: 'minimal-white', updatedAt: new Date() },
         { upsert: true }
       )
-      
+
       await ThemeSettings.findOneAndUpdate(
         {},
         { themeId: 'minimal-white', mode: 'light', updatedAt: new Date() },
         { upsert: true }
       )
     }
-    
+
     revalidatePath('/admin/themes')
     revalidatePath('/')
-    
+
     return { success: true, message: 'Theme deleted successfully' }
   } catch (error) {
     console.error('Theme deletion error:', error)
-    return { 
-      success: false, 
-      message: error instanceof Error ? error.message : 'Failed to delete theme' 
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : 'Failed to delete theme',
     }
   }
 }
@@ -199,24 +210,28 @@ export async function deleteCustomThemeAction(
 export async function seedDatabaseAction() {
   try {
     await connectToDatabase()
-    
+
     // Your existing seed logic here
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/v1/admin/seed`, {
-      method: 'POST',
-    })
-    
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/v1/admin/seed`,
+      {
+        method: 'POST',
+      }
+    )
+
     if (!response.ok) {
       throw new Error('Database seeding failed')
     }
-    
+
     revalidatePath('/admin')
-    
+
     return { success: true, message: 'Database seeded successfully' }
   } catch (error) {
     console.error('Database seeding error:', error)
-    return { 
-      success: false, 
-      message: error instanceof Error ? error.message : 'Failed to seed database' 
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : 'Failed to seed database',
     }
   }
 }
@@ -225,30 +240,34 @@ export async function seedDatabaseAction() {
 export async function cleanupThemesAction() {
   try {
     await connectToDatabase()
-    
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/v1/themes/cleanup`, {
-      method: 'POST',
-    })
-    
+
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/v1/themes/cleanup`,
+      {
+        method: 'POST',
+      }
+    )
+
     if (!response.ok) {
       throw new Error('Theme cleanup failed')
     }
-    
+
     const result = await response.json()
-    
+
     revalidatePath('/admin/themes')
     revalidatePath('/')
-    
-    return { 
-      success: true, 
+
+    return {
+      success: true,
       message: `Cleanup completed. Removed ${result.totalDuplicatesRemoved} duplicate themes.`,
-      details: result
+      details: result,
     }
   } catch (error) {
     console.error('Theme cleanup error:', error)
-    return { 
-      success: false, 
-      message: error instanceof Error ? error.message : 'Failed to cleanup themes' 
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : 'Failed to cleanup themes',
     }
   }
 }

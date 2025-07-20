@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
+import * as React from 'react'
 
 export interface PictureProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Image source URL */
@@ -19,13 +19,13 @@ export interface PictureProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Fallback image if main image fails to load */
   fallback?: string
   /** Loading behavior */
-  loading?: "lazy" | "eager"
+  loading?: 'lazy' | 'eager'
   /** Sizes attribute for responsive images */
   sizes?: string
   /** Source set for responsive images */
   srcSet?: string
   /** Object fit behavior */
-  objectFit?: "cover" | "contain" | "fill" | "scale-down" | "none"
+  objectFit?: 'cover' | 'contain' | 'fill' | 'scale-down' | 'none'
   /** Object position */
   objectPosition?: string
   /** Show loading skeleton */
@@ -45,9 +45,9 @@ export interface PictureProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Enable zoom on hover */
   enableZoom?: boolean
   /** Rounded corners */
-  rounded?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "full"
+  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
   /** Shadow */
-  shadow?: "none" | "sm" | "md" | "lg" | "xl"
+  shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
 }
 
 const Picture = React.forwardRef<HTMLDivElement, PictureProps>(
@@ -58,13 +58,13 @@ const Picture = React.forwardRef<HTMLDivElement, PictureProps>(
       width,
       height,
       aspectRatio,
-      placeholder = "/placeholder.svg",
-      fallback = "/placeholder.svg",
-      loading = "lazy",
+      placeholder = '/placeholder.svg',
+      fallback = '/placeholder.svg',
+      loading = 'lazy',
       sizes,
       srcSet,
-      objectFit = "cover",
-      objectPosition = "center",
+      objectFit = 'cover',
+      objectPosition = 'center',
       showSkeleton = true,
       skeleton: CustomSkeleton,
       priority = false,
@@ -73,8 +73,8 @@ const Picture = React.forwardRef<HTMLDivElement, PictureProps>(
       onLoad,
       onError,
       enableZoom = false,
-      rounded = "none",
-      shadow = "none",
+      rounded = 'none',
+      shadow = 'none',
       className,
       ...props
     },
@@ -89,13 +89,13 @@ const Picture = React.forwardRef<HTMLDivElement, PictureProps>(
 
     // Intersection Observer for lazy loading
     React.useEffect(() => {
-      if (priority || loading === "eager") {
+      if (priority || loading === 'eager') {
         setIsIntersecting(true)
         return
       }
 
       const observer = new IntersectionObserver(
-        (entries) => {
+        entries => {
           const [entry] = entries
           if (entry?.isIntersecting) {
             setIsIntersecting(true)
@@ -104,7 +104,7 @@ const Picture = React.forwardRef<HTMLDivElement, PictureProps>(
         },
         {
           threshold: 0.1,
-          rootMargin: "50px",
+          rootMargin: '50px',
         }
       )
 
@@ -142,39 +142,41 @@ const Picture = React.forwardRef<HTMLDivElement, PictureProps>(
     // Get rounded classes
     const getRoundedClass = (rounded: string) => {
       const roundedClasses = {
-        none: "",
-        sm: "rounded-sm",
-        md: "rounded-md",
-        lg: "rounded-lg",
-        xl: "rounded-xl",
-        "2xl": "rounded-2xl",
-        full: "rounded-full",
+        none: '',
+        sm: 'rounded-sm',
+        md: 'rounded-md',
+        lg: 'rounded-lg',
+        xl: 'rounded-xl',
+        '2xl': 'rounded-2xl',
+        full: 'rounded-full',
       }
-      return roundedClasses[rounded as keyof typeof roundedClasses] || ""
+      return roundedClasses[rounded as keyof typeof roundedClasses] || ''
     }
 
     // Get shadow classes
     const getShadowClass = (shadow: string) => {
       const shadowClasses = {
-        none: "",
-        sm: "shadow-sm",
-        md: "shadow-md",
-        lg: "shadow-lg",
-        xl: "shadow-xl",
+        none: '',
+        sm: 'shadow-sm',
+        md: 'shadow-md',
+        lg: 'shadow-lg',
+        xl: 'shadow-xl',
       }
-      return shadowClasses[shadow as keyof typeof shadowClasses] || ""
+      return shadowClasses[shadow as keyof typeof shadowClasses] || ''
     }
 
     // Get object fit classes
     const getObjectFitClass = (fit: string) => {
       const objectFitClasses = {
-        cover: "object-cover",
-        contain: "object-contain",
-        fill: "object-fill",
-        "scale-down": "object-scale-down",
-        none: "object-none",
+        cover: 'object-cover',
+        contain: 'object-contain',
+        fill: 'object-fill',
+        'scale-down': 'object-scale-down',
+        none: 'object-none',
       }
-      return objectFitClasses[fit as keyof typeof objectFitClasses] || "object-cover"
+      return (
+        objectFitClasses[fit as keyof typeof objectFitClasses] || 'object-cover'
+      )
     }
 
     // Default skeleton component
@@ -188,16 +190,16 @@ const Picture = React.forwardRef<HTMLDivElement, PictureProps>(
       <div
         ref={containerRef}
         className={cn(
-          "relative overflow-hidden bg-gray-100 dark:bg-gray-800",
+          'relative overflow-hidden bg-gray-100 dark:bg-gray-800',
           getRoundedClass(rounded),
           getShadowClass(shadow),
-          enableZoom && "group cursor-pointer",
+          enableZoom && 'group cursor-pointer',
           className
         )}
         style={{
           aspectRatio: aspectRatio,
-          width: width ? `${width}px` : "100%",
-          height: height ? `${height}px` : aspectRatio ? "auto" : "100%",
+          width: width ? `${width}px` : '100%',
+          height: height ? `${height}px` : aspectRatio ? 'auto' : '100%',
         }}
         {...props}
       >
@@ -244,19 +246,19 @@ const Picture = React.forwardRef<HTMLDivElement, PictureProps>(
             height={height}
             sizes={sizes}
             srcSet={srcSet}
-            loading={priority ? "eager" : "lazy"}
+            loading={priority ? 'eager' : 'lazy'}
             onLoad={handleLoad}
             onError={handleError}
             className={cn(
-              "w-full h-full transition-all duration-300",
+              'w-full h-full transition-all duration-300',
               getObjectFitClass(objectFit),
-              enableZoom && "group-hover:scale-105",
-              isLoading && "opacity-0",
-              !isLoading && "opacity-100"
+              enableZoom && 'group-hover:scale-105',
+              isLoading && 'opacity-0',
+              !isLoading && 'opacity-100'
             )}
             style={{
               objectPosition,
-              filter: blurDataURL && isLoading ? "blur(5px)" : "none",
+              filter: blurDataURL && isLoading ? 'blur(5px)' : 'none',
             }}
           />
         )}
@@ -267,9 +269,9 @@ const Picture = React.forwardRef<HTMLDivElement, PictureProps>(
             src={blurDataURL}
             alt=""
             className={cn(
-              "absolute inset-0 w-full h-full",
+              'absolute inset-0 w-full h-full',
               getObjectFitClass(objectFit),
-              "filter blur-sm scale-105"
+              'filter blur-sm scale-105'
             )}
             style={{ objectPosition }}
           />
@@ -279,6 +281,6 @@ const Picture = React.forwardRef<HTMLDivElement, PictureProps>(
   }
 )
 
-Picture.displayName = "Picture"
+Picture.displayName = 'Picture'
 
 export { Picture }

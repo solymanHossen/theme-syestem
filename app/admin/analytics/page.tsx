@@ -1,7 +1,7 @@
-import { TrendingUp, Users, ShoppingBag, DollarSign } from "lucide-react"
+import { DollarSign, ShoppingBag, TrendingUp, Users } from 'lucide-react'
 
-import { AdminLayout } from "@/components/admin/admin-layout"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { AdminLayout } from '@/components/admin/admin-layout'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function AdminAnalyticsPage() {
   return (
@@ -20,7 +20,9 @@ export default function AdminAnalyticsPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">$45,231.89</div>
-              <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+              <p className="text-xs text-muted-foreground">
+                +20.1% from last month
+              </p>
             </CardContent>
           </Card>
 
@@ -31,7 +33,9 @@ export default function AdminAnalyticsPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">+2350</div>
-              <p className="text-xs text-muted-foreground">+180.1% from last month</p>
+              <p className="text-xs text-muted-foreground">
+                +180.1% from last month
+              </p>
             </CardContent>
           </Card>
 
@@ -42,7 +46,9 @@ export default function AdminAnalyticsPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">+12,234</div>
-              <p className="text-xs text-muted-foreground">+19% from last month</p>
+              <p className="text-xs text-muted-foreground">
+                +19% from last month
+              </p>
             </CardContent>
           </Card>
 
@@ -53,7 +59,9 @@ export default function AdminAnalyticsPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">+573</div>
-              <p className="text-xs text-muted-foreground">+201 since last hour</p>
+              <p className="text-xs text-muted-foreground">
+                +201 since last hour
+              </p>
             </CardContent>
           </Card>
         </div>

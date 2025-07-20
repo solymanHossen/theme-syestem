@@ -1,21 +1,34 @@
-"use client"
+'use client'
 
-import { Eye, EyeOff, Palette, Settings, Plus, Search, Filter } from "lucide-react"
-import { useEffect, useState } from "react"
+import {
+  Eye,
+  EyeOff,
+  Filter,
+  Palette,
+  Plus,
+  Search,
+  Settings,
+} from 'lucide-react'
+import { useEffect, useState } from 'react'
 
-import { useTheme } from "@/components/theme-provider"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
-import { useThemeStore } from "@/lib/stores/themeStore"
-import { themes, themeCategories, type CustomTheme } from "@/lib/themeData"
+import { useTheme } from '@/components/theme-provider'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Separator } from '@/components/ui/separator'
+import { useThemeStore } from '@/lib/stores/themeStore'
+import { themeCategories, themes, type CustomTheme } from '@/lib/themeData'
 
-import { ThemeCustomizer } from "./theme-customizer"
-import { ThemePreviewCard } from "./theme-preview-card"
-
+import { ThemeCustomizer } from './theme-customizer'
+import { ThemePreviewCard } from './theme-preview-card'
 
 export function ThemeDashboard() {
   const {
@@ -36,9 +49,11 @@ export function ThemeDashboard() {
   const { isPreview } = useTheme()
 
   const [isCustomizing, setIsCustomizing] = useState(false)
-  const [customizingTheme, setCustomizingTheme] = useState<CustomTheme | null>(null)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("all")
+  const [customizingTheme, setCustomizingTheme] = useState<CustomTheme | null>(
+    null
+  )
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('all')
 
   useEffect(() => {
     loadThemeSettings()
@@ -57,7 +72,7 @@ export function ThemeDashboard() {
   const handleSaveCustomTheme = async (theme: CustomTheme) => {
     try {
       let savedTheme: CustomTheme
-      
+
       if (customizingTheme?.isCustom) {
         // Update existing custom theme - use the original theme ID
         const themeToUpdate = { ...theme, id: customizingTheme.id }
@@ -65,7 +80,7 @@ export function ThemeDashboard() {
       } else {
         // Create new custom theme from predefined theme or completely new
         const newTheme = { ...theme }
-        
+
         // If customizing a predefined theme, create a unique ID and name
         if (customizingTheme && !customizingTheme.isCustom) {
           newTheme.id = generateUniqueThemeId(theme.name)
@@ -76,17 +91,17 @@ export function ThemeDashboard() {
           newTheme.id = generateUniqueThemeId(theme.name)
           newTheme.isCustom = true
         }
-        
+
         savedTheme = await saveCustomTheme(newTheme)
       }
-      
+
       setIsCustomizing(false)
       setCustomizingTheme(null)
-      
+
       // Set as active theme
       await setActiveTheme(savedTheme.id)
     } catch (error) {
-      console.error("Failed to save theme:", error)
+      console.error('Failed to save theme:', error)
       // Error is handled by the store, don't close the customizer
     }
   }
@@ -98,17 +113,22 @@ export function ThemeDashboard() {
   }
 
   // Filter themes based on search and category
-  const filteredThemes = allThemes.filter((theme) => {
+  const filteredThemes = allThemes.filter(theme => {
     const matchesSearch =
       theme.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       theme.description.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = selectedCategory === "all" || theme.category === selectedCategory
+    const matchesCategory =
+      selectedCategory === 'all' || theme.category === selectedCategory
     return matchesSearch && matchesCategory
   })
 
   if (isCustomizing) {
     return (
-      <ThemeCustomizer theme={customizingTheme} onSave={handleSaveCustomTheme} onCancel={handleCancelCustomization} />
+      <ThemeCustomizer
+        theme={customizingTheme}
+        onSave={handleSaveCustomTheme}
+        onCancel={handleCancelCustomization}
+      />
     )
   }
 
@@ -118,7 +138,9 @@ export function ThemeDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Theme Management</h1>
-          <p className="text-muted-foreground mt-1">Manage and customize your eCommerce store themes</p>
+          <p className="text-muted-foreground mt-1">
+            Manage and customize your eCommerce store themes
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <Button onClick={handleCreateCustomTheme}>
@@ -145,13 +167,15 @@ export function ThemeDashboard() {
             <div>
               <h4 className="font-medium mb-1">Active Theme</h4>
               <p className="text-sm text-muted-foreground">
-                {themes.find((t) => t.id === activeThemeId)?.name || "Unknown"}
+                {themes.find(t => t.id === activeThemeId)?.name || 'Unknown'}
               </p>
             </div>
             <div>
               <h4 className="font-medium mb-1">Current Mode</h4>
               <div className="flex items-center gap-2">
-                <Badge variant="secondary">{mode === "light" ? "☀️ Light Mode" : "🌙 Dark Mode"}</Badge>
+                <Badge variant="secondary">
+                  {mode === 'light' ? '☀️ Light Mode' : '🌙 Dark Mode'}
+                </Badge>
               </div>
             </div>
             <div>
@@ -187,7 +211,7 @@ export function ThemeDashboard() {
             <Input
               placeholder="Search themes..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               className="pl-10"
             />
           </div>
@@ -199,7 +223,7 @@ export function ThemeDashboard() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {themeCategories.map((category) => (
+              {themeCategories.map(category => (
                 <SelectItem key={category.id} value={category.id}>
                   {category.name} ({category.count})
                 </SelectItem>
@@ -213,10 +237,13 @@ export function ThemeDashboard() {
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-semibold">
-            {selectedCategory === "all" ? "All Themes" : themeCategories.find((c) => c.id === selectedCategory)?.name}
+            {selectedCategory === 'all'
+              ? 'All Themes'
+              : themeCategories.find(c => c.id === selectedCategory)?.name}
           </h2>
           <Badge variant="outline">
-            {filteredThemes.length} theme{filteredThemes.length !== 1 ? "s" : ""} found
+            {filteredThemes.length} theme
+            {filteredThemes.length !== 1 ? 's' : ''} found
           </Badge>
         </div>
 
@@ -226,7 +253,8 @@ export function ThemeDashboard() {
               <Palette className="w-12 h-12 text-muted-foreground mb-4" />
               <h3 className="text-lg font-medium mb-2">No themes found</h3>
               <p className="text-muted-foreground text-center mb-4">
-                Try adjusting your search or filter criteria, or create a new custom theme.
+                Try adjusting your search or filter criteria, or create a new
+                custom theme.
               </p>
               <Button onClick={handleCreateCustomTheme}>
                 <Plus className="w-4 h-4 mr-2" />
@@ -236,7 +264,7 @@ export function ThemeDashboard() {
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredThemes.map((theme) => (
+            {filteredThemes.map(theme => (
               <ThemePreviewCard
                 key={theme.id}
                 theme={theme}

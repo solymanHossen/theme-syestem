@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse } from 'next/server'
 
-import { CustomTheme } from "@/lib/models/theme"
-import connectToDatabase from "@/lib/mongoose"
-import { themes } from "@/lib/themeData"
+import { CustomTheme } from '@/lib/models/theme'
+import connectToDatabase from '@/lib/mongoose'
+import { themes } from '@/lib/themeData'
 
 export async function GET(
   request: NextRequest,
@@ -12,7 +12,10 @@ export async function GET(
     const { id } = params
 
     if (!id) {
-      return NextResponse.json({ error: "Theme ID is required" }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Theme ID is required' },
+        { status: 400 }
+      )
     }
 
     // First, check predefined themes
@@ -26,13 +29,16 @@ export async function GET(
     const customTheme = await CustomTheme.findOne({ id }).lean()
 
     if (!customTheme) {
-      return NextResponse.json({ error: "Theme not found" }, { status: 404 })
+      return NextResponse.json({ error: 'Theme not found' }, { status: 404 })
     }
 
     return NextResponse.json({ theme: customTheme })
   } catch (error) {
-    console.error("Error fetching theme:", error)
-    return NextResponse.json({ error: "Failed to fetch theme" }, { status: 500 })
+    console.error('Error fetching theme:', error)
+    return NextResponse.json(
+      { error: 'Failed to fetch theme' },
+      { status: 500 }
+    )
   }
 }
 
@@ -45,7 +51,10 @@ export async function PUT(
     const themeData = await request.json()
 
     if (!id) {
-      return NextResponse.json({ error: "Theme ID is required" }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Theme ID is required' },
+        { status: 400 }
+      )
     }
 
     await connectToDatabase()
@@ -58,18 +67,24 @@ export async function PUT(
     )
 
     if (!updatedTheme) {
-      return NextResponse.json({ 
-        error: "Custom theme not found or cannot update predefined theme" 
-      }, { status: 404 })
+      return NextResponse.json(
+        {
+          error: 'Custom theme not found or cannot update predefined theme',
+        },
+        { status: 404 }
+      )
     }
 
     return NextResponse.json({
       theme: updatedTheme,
-      message: "Theme updated successfully",
+      message: 'Theme updated successfully',
     })
   } catch (error) {
-    console.error("Error updating theme:", error)
-    return NextResponse.json({ error: "Failed to update theme" }, { status: 500 })
+    console.error('Error updating theme:', error)
+    return NextResponse.json(
+      { error: 'Failed to update theme' },
+      { status: 500 }
+    )
   }
 }
 
@@ -81,29 +96,38 @@ export async function DELETE(
     const { id } = params
 
     if (!id) {
-      return NextResponse.json({ error: "Theme ID is required" }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Theme ID is required' },
+        { status: 400 }
+      )
     }
 
     await connectToDatabase()
 
     // Only allow deleting custom themes
-    const deletedTheme = await CustomTheme.findOneAndDelete({ 
-      id, 
-      isCustom: true 
+    const deletedTheme = await CustomTheme.findOneAndDelete({
+      id,
+      isCustom: true,
     })
 
     if (!deletedTheme) {
-      return NextResponse.json({ 
-        error: "Custom theme not found or cannot delete predefined theme" 
-      }, { status: 404 })
+      return NextResponse.json(
+        {
+          error: 'Custom theme not found or cannot delete predefined theme',
+        },
+        { status: 404 }
+      )
     }
 
     return NextResponse.json({
-      message: "Theme deleted successfully",
-      deletedTheme: { id: deletedTheme.id, name: deletedTheme.name }
+      message: 'Theme deleted successfully',
+      deletedTheme: { id: deletedTheme.id, name: deletedTheme.name },
     })
   } catch (error) {
-    console.error("Error deleting theme:", error)
-    return NextResponse.json({ error: "Failed to delete theme" }, { status: 500 })
+    console.error('Error deleting theme:', error)
+    return NextResponse.json(
+      { error: 'Failed to delete theme' },
+      { status: 500 }
+    )
   }
 }

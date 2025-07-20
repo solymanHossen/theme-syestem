@@ -1,54 +1,56 @@
-import { NextResponse } from "next/server"
+import { NextResponse } from 'next/server'
 
-import { CustomTheme, ActiveTheme, ThemeSettings } from "@/lib/models/theme"
-import connectToDatabase from "@/lib/mongoose"
+import { ActiveTheme, CustomTheme, ThemeSettings } from '@/lib/models/theme'
+import connectToDatabase from '@/lib/mongoose'
 
 export async function GET() {
   try {
     await connectToDatabase()
 
-    const [
-      totalThemes,
-      customThemes,
-      predefinedThemes,
-      activeTheme,
-      settings
-    ] = await Promise.all([
-      CustomTheme.countDocuments({}),
-      CustomTheme.countDocuments({ isCustom: true }),
-      CustomTheme.countDocuments({ isCustom: { $ne: true } }),
-      ActiveTheme.findOne(),
-      ThemeSettings.findOne()
-    ])
+    const [totalThemes, customThemes, predefinedThemes, activeTheme, settings] =
+      await Promise.all([
+        CustomTheme.countDocuments({}),
+        CustomTheme.countDocuments({ isCustom: true }),
+        CustomTheme.countDocuments({ isCustom: { $ne: true } }),
+        ActiveTheme.findOne(),
+        ThemeSettings.findOne(),
+      ])
 
     return NextResponse.json({
       database: {
         connected: true,
-        status: "healthy"
+        status: 'healthy',
       },
       themes: {
         total: totalThemes,
         custom: customThemes,
-        predefined: predefinedThemes
+        predefined: predefinedThemes,
       },
-      activeTheme: activeTheme ? {
-        themeId: activeTheme.themeId,
-        updatedAt: activeTheme.updatedAt
-      } : null,
-      settings: settings ? {
-        themeId: settings.themeId,
-        mode: settings.mode,
-        updatedAt: settings.updatedAt
-      } : null
+      activeTheme: activeTheme
+        ? {
+            themeId: activeTheme.themeId,
+            updatedAt: activeTheme.updatedAt,
+          }
+        : null,
+      settings: settings
+        ? {
+            themeId: settings.themeId,
+            mode: settings.mode,
+            updatedAt: settings.updatedAt,
+          }
+        : null,
     })
   } catch (error) {
-    console.error("Error checking database status:", error)
-    return NextResponse.json({
-      database: {
-        connected: false,
-        status: "error",
-        error: error instanceof Error ? error.message : "Unknown error"
-      }
-    }, { status: 500 })
+    console.error('Error checking database status:', error)
+    return NextResponse.json(
+      {
+        database: {
+          connected: false,
+          status: 'error',
+          error: error instanceof Error ? error.message : 'Unknown error',
+        },
+      },
+      { status: 500 }
+    )
   }
 }
